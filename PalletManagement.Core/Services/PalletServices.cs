@@ -3,9 +3,10 @@ using PalletManagement.Core.Domain;
 using PalletManagement.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
-namespace ProjectIV.Core.Services
+namespace PalletManagement.Core.Services
 {
 
     public interface IPalletServices
@@ -14,8 +15,7 @@ namespace ProjectIV.Core.Services
         int Update(Pallet oPallet);
         Pallet GetbyCode(string PalletCode);
         Pallet GetbyId(int PalletId);
-        IEnumerable<Pallet> GetListbyLocation(int FacilityId);
-        IEnumerable<Pallet> GetList();
+        IQueryable<Pallet> GetList();
     }
 
     public class PalletServices : BaseService, IPalletServices
@@ -56,14 +56,9 @@ namespace ProjectIV.Core.Services
 
         }
 
-        public IEnumerable<Pallet> GetListbyLocation(int FacilityId)
+        public IQueryable<Pallet> GetList()
         {
-            return _palletRepo.All.Where(x => x.CurrentLocation.FacilityId == FacilityId).ToList();
-        }
-
-        public IEnumerable<Pallet> GetList()
-        {
-            return _palletRepo.All;
+            return _palletRepo.All.AsNoTracking();
         }
     }
 

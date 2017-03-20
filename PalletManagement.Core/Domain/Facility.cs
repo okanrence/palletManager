@@ -15,5 +15,8 @@ namespace PalletManagement.Core.Domain
         public int FacilityId { get; set; }
         public string FacilityName { get; set; }
         public string FacilityType { get; set; }
+        public string FacilityAddress { get; set; }
+        public int CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }

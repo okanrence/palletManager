@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectIV.Core.Services
+namespace PalletManagement.Core.Services
 {
     public abstract class BaseService {
         protected IUnitOfWork unitOfWork;

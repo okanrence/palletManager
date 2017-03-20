@@ -7,10 +7,10 @@ using PalletManagement.Core.Domain;
 namespace PalletManagement.Core
 {
 
-    public partial class MyAppToolsDBContext : DbContext
+    public partial class appDbContext : DbContext
     {
-        public MyAppToolsDBContext()
-            : base("name=MyAppToolsDBContext")
+        public appDbContext()
+            : base("name=DefaultConnection")
         {
 
         }
@@ -19,6 +19,7 @@ namespace PalletManagement.Core
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Facility> Facility { get; set; }
         public virtual DbSet<Pallet> Pallet { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

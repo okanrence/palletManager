@@ -91,8 +91,6 @@ namespace MyAppTools.Services
             {
                 hashValue = Encoding.UTF8.GetString(hashBytes);
             }
-            //if (hashValue.EndsWith("=="))
-            //    hashValue = hashValue.Remove(hashValue.Length - 2, 2);
             return hashValue;
         }
 

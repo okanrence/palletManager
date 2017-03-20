@@ -10,9 +10,7 @@ namespace PalletManagement.Core.Domain
 {
     public class BaseDomain
     {
-        DateTime DateAdded { get; set; }
-        DateTime DateDeleted { get; set; }
-        DateTime LastUpdatedDate { get; set; }
-        bool IsDeleted { get; set; }
+        public DateTime? DateAdded { get; set; }
+        public DateTime? LastUpdatedDate { get; set; }
     }
 }

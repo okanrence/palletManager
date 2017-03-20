@@ -3,17 +3,19 @@ using PalletManagement.Core.Domain;
 using PalletManagement.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
-namespace ProjectIV.Core.Services
+namespace PalletManagement.Core.Services
 {
 
     public interface ICustomerServices
     {
         int Add(Customer oCustomer);
         int Update(Customer oCustomer);
+        int Delete(int CustomerId);
         Customer GetbyId(int CustomerId);
-        IEnumerable<Customer> GetList();
+        IQueryable<Customer> GetList();
     }
 
     public class CustomerServices : BaseService, ICustomerServices
@@ -32,10 +34,11 @@ namespace ProjectIV.Core.Services
 
         public int Update(Customer oCustomer)
         {
-            var originalCustomer = _customerRepo.Find(oCustomer.CustomerId);
-            originalCustomer.Address = oCustomer.Address;
+            var originalCustomer = GetbyId(oCustomer.CustomerId);
             originalCustomer.CustomerName = oCustomer.CustomerName;
             originalCustomer.EmailAddress = oCustomer.EmailAddress;
+            originalCustomer.ContactPerson = oCustomer.ContactPerson;
+            originalCustomer.PhoneNumber = oCustomer.PhoneNumber;
             originalCustomer.Facilities = oCustomer.Facilities;
 
             _customerRepo.Edit(originalCustomer);
@@ -45,13 +48,22 @@ namespace ProjectIV.Core.Services
      
         public Customer GetbyId(int CustomerId)
         {
-            return _customerRepo.Find(CustomerId);
-
+            return
+                _customerRepo.All
+                .AsNoTracking().Where(x => x.CustomerId == CustomerId)
+                .FirstOrDefault();
         }
 
-        public IEnumerable<Customer> GetList()
+        public IQueryable<Customer> GetList()
         {
-            return _customerRepo.All;
+            return _customerRepo.All.AsNoTracking();
+        }
+
+        public int Delete(int CustomerId)
+        {
+            var oCustomer = GetbyId(CustomerId);
+            _customerRepo.Delete(oCustomer);
+            return unitOfWork.SaveChanges();
         }
     }
 

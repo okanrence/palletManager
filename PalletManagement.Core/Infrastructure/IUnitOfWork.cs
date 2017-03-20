@@ -13,8 +13,8 @@ namespace PalletManagement.Core.Infrastructure
 
     internal class UnitOfWork : IUnitOfWork
     {
-        private MyAppToolsDBContext _Context = new MyAppToolsDBContext();
-        internal MyAppToolsDBContext Context { get { return this._Context; } }
+        private appDbContext _Context = new appDbContext();
+        internal appDbContext Context { get { return this._Context; } }
 
         public int SaveChanges()
         {

@@ -5,13 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ProjectIV.Core.Services
+namespace PalletManagement.Core.Services
 {
 
     public interface IFacilityServices
     {
         int Add(Facility oFacility);
         int Update(Facility oFacility);
+        int Delete(int FacilityId);
         Facility GetbyId(int FacilityId);
         IEnumerable<Facility> GetList();
     }
@@ -50,6 +51,13 @@ namespace ProjectIV.Core.Services
         public IEnumerable<Facility> GetList()
         {
             return _facilityRepo.All;
+        }
+
+        public int Delete(int FacilityId)
+        {
+            var oFacility = GetbyId(FacilityId);
+            _facilityRepo.Delete(oFacility);
+            return unitOfWork.SaveChanges();
         }
     }
 
