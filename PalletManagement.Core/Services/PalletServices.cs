@@ -12,10 +12,14 @@ namespace PalletManagement.Core.Services
     public interface IPalletServices
     {
         int Add(Pallet oPallet);
+        int Add(List<Pallet> oPallets);
         int Update(Pallet oPallet);
+        int Update(List<Pallet> oPallets);
         Pallet GetbyCode(string PalletCode);
         Pallet GetbyId(int PalletId);
         IQueryable<Pallet> GetList();
+        object GetDisplayList(List<Pallet> oPallets);
+
     }
 
     public class PalletServices : BaseService, IPalletServices
@@ -28,18 +32,29 @@ namespace PalletManagement.Core.Services
 
         public int Add(Pallet oPallet)
         {
+
             _palletRepo.Add(oPallet);
             return this.unitOfWork.SaveChanges();
         }
 
+        public int Add(List<Pallet> oPallets)
+        {
+            foreach (var oPallet in oPallets)
+            {
+                _palletRepo.Add(oPallet);
+            }
+            return this.unitOfWork.SaveChanges();
+
+        }
         public int Update(Pallet oPallet)
         {
             var originalPallet = _palletRepo.Find(oPallet.PalletId);
-            originalPallet.AssignedCustomer = oPallet.AssignedCustomer;
-            originalPallet.CurrentLocation = oPallet.CurrentLocation;
+            originalPallet.FacilityId = oPallet.FacilityId;
             originalPallet.PalletCode = oPallet.PalletCode;
-            originalPallet.PalletStatus = oPallet.PalletStatus;
-
+            originalPallet.StatusId = oPallet.StatusId;
+            originalPallet.CurrentShipmentId = oPallet.CurrentShipmentId;
+            originalPallet.LastMovementDate = oPallet.LastMovementDate;
+            originalPallet.LastUpdatedDate = DateTime.Now;
             _palletRepo.Edit(originalPallet);
 
             return unitOfWork.SaveChanges();
@@ -59,6 +74,33 @@ namespace PalletManagement.Core.Services
         public IQueryable<Pallet> GetList()
         {
             return _palletRepo.All.AsNoTracking();
+        }
+
+        public object GetDisplayList(List<Pallet> oPallets)
+        {
+            return oPallets.Select(i => new
+            {
+                i.PalletId,
+                i.PalletCode,
+                StatusName = i.PalletStatus?.StatusName ?? "N/A",
+                FacilityName = i.CurrentLocation?.FacilityName ?? "N/A"
+            });
+        }
+
+        public int Update(List<Pallet> oPallets)
+        {
+            foreach (var oPallet in oPallets)
+            {
+                var originalPallet = _palletRepo.Find(oPallet.PalletId);
+                originalPallet.FacilityId = oPallet.FacilityId;
+                originalPallet.PalletCode = oPallet.PalletCode;
+                originalPallet.StatusId = oPallet.StatusId;
+                originalPallet.LastMovementDate = oPallet.LastMovementDate;
+                originalPallet.LastUpdatedDate = DateTime.Now;
+                originalPallet.CurrentShipmentId = oPallet.CurrentShipmentId;
+                _palletRepo.Edit(originalPallet);
+            }
+            return unitOfWork.SaveChanges();
         }
     }
 

@@ -22,5 +22,22 @@ namespace PalletManagement.Core.Services
         public const string ENGINEER = "Engineer";
        
     }
+    public class FACILITY_TYPES
+    {
+        public const string DEPOT = "Depot";
+        public const string PLANT = "Plant";
 
+    }
+    public enum PALLET_STATUS
+    {
+        Available = 1,
+        Repairable,
+        Total_Damage,
+        Unaccounted
+    }
+    public enum SHIPMENT_STATUS
+    {
+        Checked_Out = 1,
+        Checked_In,
+    }
 }

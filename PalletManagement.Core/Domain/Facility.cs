@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace PalletManagement.Core.Domain
 { 
-    public class Facility : BaseDomain
+    public class Facility : baseDomain
     {
+        public Facility()
+        {
+            this.Users = new List<User>();
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int FacilityId { get; set; }
@@ -18,5 +23,6 @@ namespace PalletManagement.Core.Domain
         public string FacilityAddress { get; set; }
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

@@ -46,7 +46,8 @@ namespace PalletManagement.Core.Services
             originalUser.LastUpdatedDate = DateTime.Now;
             originalUser.ProfileStatus = oUser.ProfileStatus;
             originalUser.StaffNumber = oUser.StaffNumber;
-            originalUser.UserRole = oUser.UserRole;
+            originalUser.UserRoleId = oUser.UserRoleId;
+            originalUser.AssignedFacilityId = oUser.AssignedFacilityId;
             originalUser.LastLoginDate = oUser.LastLoginDate;
 
             _UserRepo.Edit(originalUser);
@@ -75,7 +76,22 @@ namespace PalletManagement.Core.Services
 
         public object GetDisplayList(List<User> oUsers)
         {
-            return oUsers.Select(i => new { i.DateAdded, i.DateDeactivated, i.EmailAddress, i.FullName, i.PhoneNumber, i.ProfileStatus, i.StaffNumber, i.UserId, i.UserRoleId, i.UserRole.UserRoleName });
+            return oUsers.Select(i => new
+            {
+                i.DateAdded,
+                i.DateDeactivated,
+                i.EmailAddress,
+                i.FullName,
+                i.PhoneNumber,
+                i.ProfileStatus,
+                i.StaffNumber,
+                i.UserId,
+                i.UserRoleId,
+                i.UserRole.UserRoleName,
+                AssignedFacility = i.AssignedFacility?.FacilityName ?? "N/A",
+                AssignedCustomer = i.AssignedFacility?.Customer?.CustomerName ?? "N/A"
+
+            });
         }
         public User Authenticate(string emailAddress, string password)
         {

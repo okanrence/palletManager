@@ -180,10 +180,7 @@ namespace PalletManagement.Web.Setup
         private void DeleteCustomer(int facilityId)
         {
             try
-
-
             {
-               
                 _facilityService.Delete(facilityId);
                 ResetForm();
                 displayMessage("Facility Deleted Successfully", true);

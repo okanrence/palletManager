@@ -76,11 +76,16 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
@@ -118,10 +123,6 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <Private>True</Private>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
       <Private>True</Private>
@@ -203,6 +204,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="ChangePassword.aspx" />
+    <Content Include="Error.aspx" />
     <Content Include="Landing.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -215,11 +217,16 @@
     <None Include="Properties\PublishProfiles\FileDepoy.pubxml" />
     <None Include="Properties\PublishProfiles\WebDeploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
+    <Content Include="PalletManagement\Shipments.aspx" />
+    <Content Include="PalletManagement\InTracking.aspx" />
+    <Content Include="PalletManagement\OutTracking.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\pikaday.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
@@ -247,6 +254,8 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Setup\PalletsView.aspx" />
+    <Content Include="Setup\PalletSetup.aspx" />
     <Content Include="Setup\UsersSetup.aspx" />
     <Content Include="Setup\FacilitySetup.aspx" />
     <Content Include="Setup\CustomerSetup.aspx" />
@@ -400,6 +409,13 @@
     <Compile Include="ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Landing.aspx.cs">
       <DependentUpon>Landing.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -418,7 +434,42 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="PalletManagement\Shipments.aspx.cs">
+      <DependentUpon>Shipments.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PalletManagement\Shipments.aspx.designer.cs">
+      <DependentUpon>Shipments.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PalletManagement\InTracking.aspx.cs">
+      <DependentUpon>InTracking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PalletManagement\InTracking.aspx.designer.cs">
+      <DependentUpon>InTracking.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PalletManagement\OutTracking.aspx.cs">
+      <DependentUpon>OutTracking.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PalletManagement\OutTracking.aspx.designer.cs">
+      <DependentUpon>OutTracking.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\PalletsView.aspx.cs">
+      <DependentUpon>PalletsView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\PalletsView.aspx.designer.cs">
+      <DependentUpon>PalletsView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\PalletSetup.aspx.cs">
+      <DependentUpon>PalletSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\PalletSetup.aspx.designer.cs">
+      <DependentUpon>PalletSetup.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Setup\UsersSetup.aspx.cs">
       <DependentUpon>UsersSetup.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

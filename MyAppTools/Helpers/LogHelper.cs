@@ -3,7 +3,7 @@
 namespace Byaxiom.Logger
 {
     public static class LogHelper {
-        private static readonly IUniversalLogger Logger = new UniversalLogger();
+        private static readonly IUniversalLogger Logger = new SeriLogger();
         public static bool DebugMode { get; set; }
 
 

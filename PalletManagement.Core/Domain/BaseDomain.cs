@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace PalletManagement.Core.Domain
 {
-    public class BaseDomain
+
+    public class baseDomain
     {
         public DateTime? DateAdded { get; set; }
         public DateTime? LastUpdatedDate { get; set; }

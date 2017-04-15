@@ -32,7 +32,7 @@
                         <asp:TextBox runat="server" ID="txtEmailAddress" CssClass="form-control" TextMode="Email" />
                     </div>
                 </div>
-                 <div class="form-group">
+                <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="txtContactPerson" CssClass="col-md-4 control-label">Contact Person</asp:Label>
                     <div class="col-md-8">
                         <asp:TextBox runat="server" ID="txtContactPerson" CssClass="form-control" TextMode="SingleLine" />
@@ -57,33 +57,27 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-10">
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <div class="bs-component">
-                            <asp:GridView ID="gdvCustomers" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="CustomerId" EmptyDataText="No Records Found." OnSelectedIndexChanged="gdvCustomers_SelectedIndexChanged" ShowHeaderWhenEmpty="True" OnRowDeleting="gdvCustomers_RowDeleting" GridLines="Horizontal" OnRowUpdating="gdvCustomers_RowUpdating">
-                                <Columns>
-                                    <asp:BoundField DataField="CustomerId" HeaderText="ID" />
-                                    <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
-                                    <asp:BoundField DataField="Address" HeaderText="Address" />
-                                    <asp:BoundField DataField="EmailAddress" HeaderText="Email" />
-                                    <asp:BoundField DataField="ContactPerson" HeaderText="ContactPerson" />
-                                    <asp:BoundField DataField="PhoneNumber" HeaderText="PhoneNumber" />
-                                    <asp:TemplateField>
-                                        <ItemTemplate>
-                                            <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False">edit</asp:LinkButton>
-                                            &nbsp;|
+        <div class="col-md-10 form-group col-lg-12 bs-component">
+            <asp:GridView ID="gdvCustomers" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="CustomerId" EmptyDataText="No Records Found." OnSelectedIndexChanged="gdvCustomers_SelectedIndexChanged" ShowHeaderWhenEmpty="True" OnRowDeleting="gdvCustomers_RowDeleting" GridLines="Horizontal" OnRowUpdating="gdvCustomers_RowUpdating">
+                <Columns>
+                    <asp:BoundField DataField="CustomerId" HeaderText="ID" />
+                    <asp:BoundField DataField="CustomerName" HeaderText="Customer Name" />
+                    <asp:BoundField DataField="Address" HeaderText="Address" />
+                    <asp:BoundField DataField="EmailAddress" HeaderText="Email" />
+                    <asp:BoundField DataField="ContactPerson" HeaderText="ContactPerson" />
+                    <asp:BoundField DataField="PhoneNumber" HeaderText="PhoneNumber" />
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False">edit</asp:LinkButton>
+                            &nbsp;|
                                                 <asp:LinkButton ID="lnkDelete" runat="server" CommandName="delete" CausesValidation="False">delete</asp:LinkButton>
-                                            &nbsp;|
+                            &nbsp;|
                                             <asp:LinkButton ID="lnkFacilities" runat="server" CommandName="update" CausesValidation="False">facilities</asp:LinkButton>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                </Columns>
-                                <HeaderStyle BackColor="#1A4874" ForeColor="White" />
-                            </asp:GridView>
-                        </div>
-                    </div>
-                </div>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+                <HeaderStyle BackColor="#1A4874" ForeColor="White" />
+            </asp:GridView>
         </div>
     </div>
 </asp:Content>

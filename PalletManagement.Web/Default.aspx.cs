@@ -53,6 +53,8 @@ namespace PalletManagement.Web
                     {
                         Session.Add("CurrentUser", CurrentUser);
                         Session.Add("UserName", CurrentUser.FirstName);
+                        var d = Request.UserAgent;
+                        var r = Request.UserHostAddress + Request.UserHostName;
                         CurrentUser.LastLoginDate = DateTime.Now;
                         if (CurrentUser.UserRole.UserRoleName != USER_ROLES.ADMIN)
                             _userServices.Update(CurrentUser);

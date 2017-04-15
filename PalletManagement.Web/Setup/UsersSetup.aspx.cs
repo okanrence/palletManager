@@ -15,11 +15,13 @@ namespace PalletManagement.Web.Setup
     {
         private readonly IUserServices _userService = null;
         private readonly IUserRoleServices _userRoleService = null;
+        private readonly ICustomerServices _customerService = null;
 
         public UserSetup()
         {
             _userService = new UserServices();
             _userRoleService = new UserRoleServices();
+            _customerService = new CustomerServices();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,6 +29,7 @@ namespace PalletManagement.Web.Setup
             {
                 LoadUserRoles();
                 LoadUsers();
+                LoadCustomers();
             }
         }
         private void LoadUserRoles()
@@ -44,6 +47,51 @@ namespace PalletManagement.Web.Setup
                 displayMessage(ex.Message, false);
             }
         }
+
+        private void LoadCustomers()
+        {
+            try
+            {
+                ddlCustomer.DataSource = _customerService.GetList().ToList();
+                ddlCustomer.DataValueField = "CustomerId";
+                ddlCustomer.DataTextField = "CustomerName";
+                ddlCustomer.DataBind();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex);
+                displayMessage(ex.Message, false);
+            }
+        }
+
+        private void LoadFacilities(int customerId)
+        {
+            try
+            {
+                if (ddlCustomer.SelectedIndex > 0)
+                {
+                    ddlFacilities.DataSource = _customerService.GetList()
+                                    .Where(x => x.CustomerId == customerId)
+                                    .FirstOrDefault().Facilities
+                                    .ToList();
+                    ddlFacilities.DataTextField = "FacilityName";
+                    ddlFacilities.DataValueField = "FacilityId";
+                    ddlFacilities.DataBind();
+                }
+                else
+                {
+                    ddlFacilities.Items.Clear();
+                   // ddlFacilities.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex);
+                displayMessage(ex.Message, false);
+            }
+        }
+
+
 
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -83,6 +131,12 @@ namespace PalletManagement.Web.Setup
         {
             try
             {
+
+                int? assignedFacilityId = null;
+
+                if (ddlFacilities.SelectedIndex >= 0)
+                    assignedFacilityId = int.Parse(ddlFacilities.SelectedValue);
+
                 var oUser = new User()
                 {
                     FirstName = txtFirstName.Text.Trim(),
@@ -93,7 +147,9 @@ namespace PalletManagement.Web.Setup
                     DateAdded = DateTime.Now,
                     ProfileStatus = ddlProfileStatus.SelectedValue,
                     StaffNumber = txtStaffNumber.Text.Trim(),
-                    UserRoleId = int.Parse(ddlUserRole.SelectedValue)
+                    UserRoleId = int.Parse(ddlUserRole.SelectedValue),
+                    AssignedFacilityId = assignedFacilityId
+
                 };
 
                 _userService.Add(oUser);
@@ -114,6 +170,11 @@ namespace PalletManagement.Web.Setup
         {
             try
             {
+                int? assignedFacilityId = null;
+
+                if (ddlFacilities.SelectedIndex >= 0)
+                    assignedFacilityId = int.Parse(ddlFacilities.SelectedValue);
+
                 var oUser = new User()
                 {
                     FirstName = txtFirstName.Text.Trim(),
@@ -123,7 +184,8 @@ namespace PalletManagement.Web.Setup
                     ProfileStatus = ddlProfileStatus.SelectedValue,
                     StaffNumber = txtStaffNumber.Text.Trim(),
                     UserRoleId = int.Parse(ddlUserRole.SelectedValue),
-                    UserId = int.Parse(hdfUserId.Value)
+                    UserId = int.Parse(hdfUserId.Value),
+                    AssignedFacilityId = assignedFacilityId
                 };
 
                 if (ddlProfileStatus.SelectedValue == "D")
@@ -165,7 +227,10 @@ namespace PalletManagement.Web.Setup
                 txtStaffNumber.Text = oUser.StaffNumber;
                 txtPhoneNumber.Text = oUser.PhoneNumber;
                 ddlProfileStatus.SelectedValue = oUser.ProfileStatus;
-                ddlUserRole.SelectedValue = oUser.UserRoleId.ToString(); ;
+                ddlUserRole.SelectedValue = oUser.UserRoleId.ToString();
+                ddlCustomer.SelectedValue = oUser.AssignedFacility == null ? "0" : oUser.AssignedFacility.CustomerId.ToString();
+                LoadFacilities(oUser.AssignedFacility.CustomerId);
+                ddlFacilities.SelectedValue = oUser.AssignedFacility == null ? "0" : oUser.AssignedFacilityId.ToString();
 
             }
             catch (Exception ex)
@@ -218,6 +283,11 @@ namespace PalletManagement.Web.Setup
             var UserID = int.Parse(e.Keys["UserId"].ToString());
             DeleteUser(UserID);
             LoadUsers();
+        }
+
+        protected void ddlCustomer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadFacilities(int.Parse(ddlCustomer.SelectedValue));
         }
 
         //protected void gdvUsers_RowUpdating(object sender, GridViewUpdateEventArgs e)

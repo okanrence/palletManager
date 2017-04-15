@@ -19,9 +19,15 @@ namespace PalletManagement.Core
         public virtual DbSet<Customer> Customer { get; set; }
         public virtual DbSet<Facility> Facility { get; set; }
         public virtual DbSet<Pallet> Pallet { get; set; }
+        public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<Shipment> Shipment { get; set; }
+        public virtual DbSet<ShipmentStatus> ShipmentStatus { get; set; }
+        public virtual DbSet<Damage> Damage { get; set; }
+        public virtual DbSet<DamageLevel> DamageLevel { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+
+       protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Properties<decimal>().Configure(c => c.HasPrecision(18, 2));
 

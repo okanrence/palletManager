@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PalletManagement.Core.Domain
 {
-    public class UserRole : BaseDomain
+    public class UserRole : baseDomain
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserRoleId { get; set; }

@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace PalletManagement.Core.Domain
 {
-    public class User : BaseDomain
+
+    public class User : baseDomain
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         [MaxLength(50)]
@@ -18,7 +20,7 @@ namespace PalletManagement.Core.Domain
         public string LastName { get; set; }
         [MaxLength(200)]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
-        [Key]
+        [Index]
         [MaxLength(20)]
         public string StaffNumber { get; set; }
         [MaxLength(100)]
@@ -27,6 +29,9 @@ namespace PalletManagement.Core.Domain
         public string PhoneNumber { get; set; }
         public int UserRoleId { get; set; }
         public virtual UserRole UserRole { get; set; }
+        public int? AssignedFacilityId { get; set; }
+        [ForeignKey("AssignedFacilityId")]
+        public virtual Facility AssignedFacility { get; set; }
         public string Password { get; set; }
         [MaxLength(1)]
         public string ProfileStatus { get; set; }

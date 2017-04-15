@@ -10,7 +10,7 @@
 namespace PalletManagement.Web.Setup {
     
     
-    public partial class UserSetup {
+    public partial class OutTracking {
         
         /// <summary>
         /// ErrorMessage control.
@@ -31,94 +31,40 @@ namespace PalletManagement.Web.Setup {
         protected global::System.Web.UI.WebControls.Literal FailureText;
         
         /// <summary>
-        /// txtFirstName control.
+        /// chkAvailablePatllets control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFirstName;
+        protected global::System.Web.UI.WebControls.CheckBoxList chkAvailablePatllets;
         
         /// <summary>
-        /// txtLastName control.
+        /// ddlDestinationFacility control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtLastName;
+        protected global::System.Web.UI.WebControls.DropDownList ddlDestinationFacility;
         
         /// <summary>
-        /// txtStaffNumber control.
+        /// txtTruckNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStaffNumber;
+        protected global::System.Web.UI.WebControls.TextBox txtTruckNumber;
         
         /// <summary>
-        /// txtEmailAddress control.
+        /// txtShipmentNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmailAddress;
-        
-        /// <summary>
-        /// txtPhoneNumber control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPhoneNumber;
-        
-        /// <summary>
-        /// ddlCustomer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCustomer;
-        
-        /// <summary>
-        /// ddlFacilities control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFacilities;
-        
-        /// <summary>
-        /// ddlUserRole control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlUserRole;
-        
-        /// <summary>
-        /// ddlProfileStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProfileStatus;
-        
-        /// <summary>
-        /// btnClear control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClear;
+        protected global::System.Web.UI.WebControls.TextBox txtShipmentNumber;
         
         /// <summary>
         /// btnSubmit control.
@@ -130,21 +76,21 @@ namespace PalletManagement.Web.Setup {
         protected global::System.Web.UI.WebControls.Button btnSubmit;
         
         /// <summary>
-        /// hdfUserId control.
+        /// hdfShipmentId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfUserId;
+        protected global::System.Web.UI.WebControls.HiddenField hdfShipmentId;
         
         /// <summary>
-        /// gdvUsers control.
+        /// gdvShipment control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gdvUsers;
+        protected global::System.Web.UI.WebControls.GridView gdvShipment;
     }
 }

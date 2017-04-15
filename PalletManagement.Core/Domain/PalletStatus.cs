@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PalletManagement.Core.Domain
 {
   
-    public class PalletStatus : BaseDomain
+    public class PalletStatus : baseDomain
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

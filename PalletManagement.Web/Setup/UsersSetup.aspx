@@ -51,9 +51,27 @@
                             CssClass="text-danger" ErrorMessage="The phone number field is required." />
                     </div>
                 </div>
+                    <div class="form-group">
+                    <asp:Label runat="server" AssociatedControlID="ddlCustomer" CssClass="col-md-4 control-label">Assigned Customer</asp:Label>
+                    <div class="col-md-7">
+                        <asp:DropDownList ID="ddlCustomer" runat="server" CssClass="form-control" AppendDataBoundItems="True" AutoPostBack="True" OnSelectedIndexChanged="ddlCustomer_SelectedIndexChanged">
+                            <asp:ListItem Value="0">--Select--</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
+                </div>
+                    <div class="form-group">
+                    <asp:Label runat="server" AssociatedControlID="ddlFacilities" CssClass="col-md-4 control-label">Assigned Facility</asp:Label>
+                    <div class="col-md-7">
+                        <asp:DropDownList ID="ddlFacilities" runat="server" CssClass="form-control" >
+                           
+                        </asp:DropDownList>
+                       
+                    </div>
+                </div>
+
                  <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="ddlUserRole" CssClass="col-md-4 control-label">Role</asp:Label>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <asp:DropDownList ID="ddlUserRole" runat="server" CssClass="form-control" AppendDataBoundItems="True">
                             <asp:ListItem Value="0">--Select--</asp:ListItem>
                         </asp:DropDownList>
@@ -63,7 +81,7 @@
                 </div>
                   <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="ddlProfileStatus" CssClass="col-md-4 control-label">Profile Status</asp:Label>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <asp:DropDownList ID="ddlProfileStatus" runat="server" CssClass="form-control">
                             <asp:ListItem Value="0">--Select--</asp:ListItem>
                             <asp:ListItem Value="A">Active</asp:ListItem>
@@ -94,6 +112,8 @@
                                 <asp:BoundField DataField="UserId" HeaderText="ID" />
                                 <asp:BoundField DataField="StaffNumber" HeaderText="Staff Number" />
                                 <asp:BoundField DataField="FullName" HeaderText="Full Name" />
+                                <asp:BoundField DataField="AssignedCustomer" HeaderText="Assigned Customer" />
+                                <asp:BoundField DataField="AssignedFacility" HeaderText="Facility" />
                                 <asp:BoundField DataField="UserRoleName" HeaderText="Role" />
                                 <asp:BoundField DataField="ProfileStatus" HeaderText="Status" />
                                 <asp:TemplateField>

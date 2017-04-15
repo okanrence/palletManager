@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PalletManagement.Core.Domain
 {
-    public class Customer : BaseDomain
+    public class Customer : baseDomain
     {
         public Customer()
         {
@@ -24,6 +24,8 @@ namespace PalletManagement.Core.Domain
         public string ContactPerson { get; set; }
         public string PhoneNumber { get; set; }
         public virtual ICollection<Facility> Facilities { get; set; }
+       
+
     }
 
 }

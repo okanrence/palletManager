@@ -8,15 +8,27 @@ using System.Threading.Tasks;
 
 namespace PalletManagement.Core.Domain
 {
-    public class Pallet : BaseDomain
+    public class Pallet : baseDomain
     {
+        public Pallet()
+        {
+            this.Shipments = new HashSet<Shipment>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PalletId { get; set; }
         [MaxLength(20)]
         public string PalletCode { get; set; }
-        public PalletStatus PalletStatus { get; set; }
-        public Facility CurrentLocation { get; set; }
-        public Customer AssignedCustomer { get; set; }
+        public int? StatusId { get; set; }
+        public virtual PalletStatus PalletStatus { get; set; }
+        public int? FacilityId { get; set; }
+        public virtual Facility CurrentLocation { get; set; }
+
+        public int? CurrentShipmentId { get; set; }
+        //[ForeignKey("CurrentShipmentId")]
+        //public virtual Shipment CurrentShipment { get; set; }
+        public virtual ICollection<Shipment> Shipments { get; set; }
+        public DateTime? LastMovementDate { get; set; }
+       
     }
 }

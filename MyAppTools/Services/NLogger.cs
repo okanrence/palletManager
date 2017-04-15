@@ -16,7 +16,7 @@ namespace Byaxiom.Logger
         void Log(Exception ex);
     }
 
-    public class UniversalLogger : IUniversalLogger
+    public class NLogger : IUniversalLogger
     {
         private static readonly NLog.Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -87,6 +87,7 @@ namespace Byaxiom.Logger
             Console.WriteLine(message);
             Console.ResetColor();
         }
+
 
     }
 }

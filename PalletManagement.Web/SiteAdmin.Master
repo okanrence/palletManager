@@ -57,7 +57,7 @@
                                 <li><a href="/Setup/UsersSetup">Users</a></li>
                                 <li><a href="/Setup/CustomerSetup">Customer</a></li>
                                 <li><a href="/Setup/FacilitySetup">Facility</a></li>
-                                <li><a href="#">Pallets</a></li>
+                                <li><a href="/Setup/PalletSetup">Pallets</a></li>
                             </ul>
                         </li>
                         <%--  <li class="dropdown">
