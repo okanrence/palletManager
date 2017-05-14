@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Http;
+using MyAppTools.Services;
 
 namespace PalletManagement.Core.Services
 {
@@ -17,22 +19,24 @@ namespace PalletManagement.Core.Services
         bool UpdatePassword(int userId, string newPassword);
         User GetbyId(int userId);
         User Authenticate(string emailAddress, string password);
+        User Authenticate(HttpRequestMessage request);
         IQueryable<User> GetList();
         object GetDisplayList(List<User> oUsers);
     }
 
     public class UserServices : BaseService, IUserServices
     {
-        private readonly IRepository<User> _UserRepo;
+        private readonly IRepository<User> _userRepo;
         public UserServices()
         {
-            _UserRepo = new BaseRepository<User>(this.unitOfWork);
+            _userRepo = new BaseRepository<User>(this.unitOfWork);
         }
 
         public int Add(User oUser)
         {
-            _UserRepo.Add(oUser);
-            return this.unitOfWork.SaveChanges();
+            _userRepo.Add(oUser);
+             this.unitOfWork.SaveChanges();
+            return oUser.UserId;
         }
 
         public int Update(User oUser)
@@ -50,27 +54,29 @@ namespace PalletManagement.Core.Services
             originalUser.AssignedFacilityId = oUser.AssignedFacilityId;
             originalUser.LastLoginDate = oUser.LastLoginDate;
 
-            _UserRepo.Edit(originalUser);
+            _userRepo.Edit(originalUser);
 
             return unitOfWork.SaveChanges();
         }
 
-        public User GetbyId(int UserId)
+        public User GetbyId(int userId)
         {
             return
-               GetList().Where(x => x.UserId == UserId)
-                .FirstOrDefault();
+               GetList()
+                .FirstOrDefault(x => x.UserId == userId);
         }
 
         public IQueryable<User> GetList()
         {
-            return _UserRepo.All.AsNoTracking();
+            return _userRepo.All.AsNoTracking()
+                .Include(x => x.AssignedFacility)
+                .Include(x => x.UserRole);
         }
 
-        public int Delete(int UserId)
+        public int Delete(int userId)
         {
-            var oUser = GetbyId(UserId);
-            _UserRepo.Delete(oUser);
+            var oUser = GetbyId(userId);
+            _userRepo.Delete(oUser);
             return unitOfWork.SaveChanges();
         }
 
@@ -95,7 +101,14 @@ namespace PalletManagement.Core.Services
         }
         public User Authenticate(string emailAddress, string password)
         {
-            return GetList().Where(x => x.EmailAddress == emailAddress && x.Password == password).FirstOrDefault();
+            return GetList().FirstOrDefault(x => x.EmailAddress == emailAddress && x.Password == password);
+        }
+
+        public User Authenticate(HttpRequestMessage request)
+        {
+            var username = request.Headers.GetValues("username").FirstOrDefault();
+            var password = request.Headers.GetValues("password").FirstOrDefault();
+            return  Authenticate(username, password);
         }
 
         public bool UpdatePassword(int userId, string newPassword)
@@ -104,9 +117,7 @@ namespace PalletManagement.Core.Services
             originalUser.LastUpdatedDate = DateTime.Now;
             originalUser.Password = newPassword;
             originalUser.MustChangePassword = false;
-
-            _UserRepo.Edit(originalUser);
-
+            _userRepo.Edit(originalUser);
             return unitOfWork.SaveChanges() > 0;
         }
     }

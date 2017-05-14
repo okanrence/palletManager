@@ -40,6 +40,24 @@ namespace PalletManagement.Web.Setup {
         protected global::System.Web.UI.WebControls.RadioButtonList rdbSetupType;
         
         /// <summary>
+        /// MultiView1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.MultiView MultiView1;
+        
+        /// <summary>
+        /// singleEntry control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View singleEntry;
+        
+        /// <summary>
         /// lblStartSerial control.
         /// </summary>
         /// <remarks>
@@ -58,13 +76,40 @@ namespace PalletManagement.Web.Setup {
         protected global::System.Web.UI.WebControls.TextBox txtStartSerial;
         
         /// <summary>
-        /// txtEndSerial control.
+        /// multipleEntry control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEndSerial;
+        protected global::System.Web.UI.WebControls.View multipleEntry;
+        
+        /// <summary>
+        /// lblExcel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblExcel;
+        
+        /// <summary>
+        /// FileUpload1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+        
+        /// <summary>
+        /// btnExtract control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnExtract;
         
         /// <summary>
         /// ddlCustomer control.
@@ -101,5 +146,14 @@ namespace PalletManagement.Web.Setup {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hdfPalletId;
+        
+        /// <summary>
+        /// gdvPallets control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gdvPallets;
     }
 }

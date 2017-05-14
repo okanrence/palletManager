@@ -12,6 +12,9 @@ namespace PalletManagement.Core
         public appDbContext()
             : base("name=DefaultConnection")
         {
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
+
 
         }
 

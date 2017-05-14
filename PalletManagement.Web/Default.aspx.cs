@@ -32,32 +32,32 @@ namespace PalletManagement.Web
                 var userName = Email.Text;
                 var password = Password.Text;
 
-                User CurrentUser = AuthenticateUser(userName, password);
+                var currentUser = AuthenticateUser(userName, password);
 
-                if (CurrentUser == null)
+                if (currentUser == null)
                 {
-                    FailureText.Text = "Invalid login attempt";
+                    FailureText.Text = @"Invalid login attempt";
                     ErrorMessage.Visible = true;
                 }
                 else
                 {
-                    if (CurrentUser.ProfileStatus == PROFILE_STATUS.DEACTIVATED)
+                    if (currentUser.ProfileStatus == PROFILE_STATUS.DEACTIVATED)
                     {
                         displayMessage("You profile has been deactivated. Please contact administrator", false);
                     }
-                    else if (CurrentUser.MustChangePassword)
+                    else if (currentUser.MustChangePassword)
                     {
-                        Response.Redirect($"/ChangePassword?query={CurrentUser.UserId}");
+                        Response.Redirect($"/ChangePassword?query={currentUser.UserId}");
                     }
                     else
                     {
-                        Session.Add("CurrentUser", CurrentUser);
-                        Session.Add("UserName", CurrentUser.FirstName);
+                        Session.Add("CurrentUser", currentUser);
+                        Session.Add("UserName", currentUser.FirstName);
                         var d = Request.UserAgent;
                         var r = Request.UserHostAddress + Request.UserHostName;
-                        CurrentUser.LastLoginDate = DateTime.Now;
-                        if (CurrentUser.UserRole.UserRoleName != USER_ROLES.ADMIN)
-                            _userServices.Update(CurrentUser);
+                        currentUser.LastLoginDate = DateTime.Now;
+                        if (currentUser.UserRole.UserRoleName != USER_ROLES.ADMIN)
+                            _userServices.Update(currentUser);
                         Response.Redirect("/Landing");
                     }
 

@@ -27,14 +27,9 @@ namespace PalletManagement.Web.Setup
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            if (!IsPostBack)
-            {
-                CurrentUser = Session["CurrentUser"] as User;
-                //txtShipmentNumber.Text = _shipmentService.GetShipmentNumber(CurrentUser.AssignedFacility?.FacilityName ?? "--");
-                //LoadPallets(CurrentUser.AssignedFacility.FacilityId);
-                LoadShipments();
-            }
+            if (IsPostBack) return;
+            CurrentUser = Session["CurrentUser"] as User;
+            LoadShipments();
         }
 
         private void LoadShipments()
@@ -50,10 +45,8 @@ namespace PalletManagement.Web.Setup
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ErrorMessage.Visible = false;
-          
             SaveShipment(int.Parse(hdfShipmentId.Value));
-
-            LoadPallets(CurrentUser.AssignedFacilityId.Value);
+            if (CurrentUser.AssignedFacilityId != null) LoadPallets(CurrentUser.AssignedFacilityId.Value);
             LoadShipments();
         }
         private void SaveShipment(int shipmentId)
@@ -62,7 +55,7 @@ namespace PalletManagement.Web.Setup
             {
                 using (var tran = new TransactionScope())
                 {
-                    List<string> selectedPallets = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected).Select(x => x.Text).ToList();
+                    var selectedPallets = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected).Select(x => x.Text).ToList();
                     var shipmentIsComplete = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected == false).Select(x => x.Text).ToList().Count <= 0;
 
                     var oShipment = _shipmentService.GetbyId(shipmentId);
@@ -70,23 +63,19 @@ namespace PalletManagement.Web.Setup
                     oShipment.IsCompleted = shipmentIsComplete;
                     oShipment.DestinationDateTime = DateTime.Now;
                     oShipment.InTrackerId = CurrentUser.UserId;
-                    oShipment.ShipmentStatusId = (int)SHIPMENT_STATUS.Checked_In;
+
 
                     var modifiedPallets = new List<Pallet>();
                     var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
+
                     foreach (var pallet in oPallets)
                     {
-
                         if (selectedPallets.Contains(pallet.PalletCode))
-                        {
                             pallet.CurrentShipmentId = null;
-                            pallet.FacilityId = oShipment.ShipmentDestinationId;
-                        }
                         else
-                        {
-                            pallet.FacilityId = oShipment.ShipmentDestinationId;
                             pallet.StatusId = (int)PALLET_STATUS.Unaccounted;
-                        }
+
+                        pallet.FacilityId = oShipment.ShipmentDestinationId;
                         modifiedPallets.Add(pallet);
                     };
 
@@ -95,27 +84,25 @@ namespace PalletManagement.Web.Setup
                     tran.Complete();
                 }
 
+
                 //redirect to view shipment
                 ResetForm();
 
-                displayMessage("Shipment Checked-In Successfully", true);
+                DisplayMessage("Shipment Checked-In Successfully", true);
                 btnSubmit.Visible = false;
 
             }
             catch (Exception ex)
             {
                 LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
+                DisplayMessage(ex.Message, false);
             }
         }
 
-        private void displayMessage(string message, bool isSuccessMsg)
+        private void DisplayMessage(string message, bool isSuccessMsg)
         {
             ErrorMessage.Visible = true;
-            if (isSuccessMsg)
-                FailureText.Text = $"{message}";
-            else
-                FailureText.Text = $"ERROR:{message}";
+            FailureText.Text = isSuccessMsg ? $@"{message}" : $@"ERROR:{message}";
         }
 
         private void ResetForm()
@@ -123,7 +110,7 @@ namespace PalletManagement.Web.Setup
             chkAvailablePatllets.ClearSelection();
             ErrorMessage.Visible = false;
             hdfShipmentId.Value = string.Empty;
-            btnSubmit.Text = "Save";
+            btnSubmit.Text = @"Save";
         }
 
 
@@ -150,15 +137,13 @@ namespace PalletManagement.Web.Setup
             catch (Exception ex)
             {
                 LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
+                DisplayMessage(ex.Message, false);
             }
         }
 
         private bool IsUpdateMode()
         {
-            if (btnSubmit.Text == "Update")
-                return true;
-            return false;
+            return btnSubmit.Text == @"Update";
         }
         private void SelectShipment(int shipmentId)
         {
@@ -179,22 +164,25 @@ namespace PalletManagement.Web.Setup
                 }
                 else
                 {
-                    displayMessage("This shipment can no longer be edited. It has already been Checked-In.", false);
+                    DisplayMessage("This shipment can no longer be edited. It has already been Checked-In.", false);
                 }
 
             }
             catch (Exception ex)
             {
                 LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
+                DisplayMessage(ex.Message, false);
 
             }
         }
 
         protected void gdvShipment_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var shipmentId = int.Parse(gdvShipment.SelectedDataKey["ShipmentId"].ToString());
-            SelectShipment(shipmentId);
+            if (gdvShipment.SelectedDataKey != null)
+            {
+                var shipmentId = int.Parse(gdvShipment.SelectedDataKey?["ShipmentId"].ToString());
+                SelectShipment(shipmentId);
+            }
             btnSubmit.Visible = true;
         }
 

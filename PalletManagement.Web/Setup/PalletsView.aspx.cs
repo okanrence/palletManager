@@ -4,6 +4,7 @@ using PalletManagement.Core.Domain;
 using PalletManagement.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -133,8 +134,9 @@ namespace PalletManagement.Web.Setup
             try
             {
                 ddlPlant.DataSource = _customerService.GetList()
-                    .Where(x => x.CustomerId == customerId)
-                    .FirstOrDefault().Facilities
+                    .Where(x => x.CustomerId == customerId).Include(x => x.Facilities)
+                    .FirstOrDefault()
+                    ?.Facilities
                     .Where(x => x.FacilityType == FACILITY_TYPES.PLANT)
                     .ToList();
                 ddlPlant.DataTextField = "FacilityName";

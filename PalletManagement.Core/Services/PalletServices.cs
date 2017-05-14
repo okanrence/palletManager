@@ -3,7 +3,9 @@ using PalletManagement.Core.Domain;
 using PalletManagement.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.OleDb;
 using System.Linq;
 
 namespace PalletManagement.Core.Services
@@ -15,10 +17,11 @@ namespace PalletManagement.Core.Services
         int Add(List<Pallet> oPallets);
         int Update(Pallet oPallet);
         int Update(List<Pallet> oPallets);
-        Pallet GetbyCode(string PalletCode);
-        Pallet GetbyId(int PalletId);
+        Pallet GetbyCode(string palletCode);
+        Pallet GetbyId(int palletId);
         IQueryable<Pallet> GetList();
         object GetDisplayList(List<Pallet> oPallets);
+        List<Pallet> ReadPalletsFromExcel(string filePath);
 
     }
 
@@ -32,7 +35,6 @@ namespace PalletManagement.Core.Services
 
         public int Add(Pallet oPallet)
         {
-
             _palletRepo.Add(oPallet);
             return this.unitOfWork.SaveChanges();
         }
@@ -44,8 +46,8 @@ namespace PalletManagement.Core.Services
                 _palletRepo.Add(oPallet);
             }
             return this.unitOfWork.SaveChanges();
-
         }
+
         public int Update(Pallet oPallet)
         {
             var originalPallet = _palletRepo.Find(oPallet.PalletId);
@@ -56,19 +58,17 @@ namespace PalletManagement.Core.Services
             originalPallet.LastMovementDate = oPallet.LastMovementDate;
             originalPallet.LastUpdatedDate = DateTime.Now;
             _palletRepo.Edit(originalPallet);
-
             return unitOfWork.SaveChanges();
         }
 
-        public Pallet GetbyCode(string PalletCode)
+        public Pallet GetbyCode(string palletCode)
         {
-            return _palletRepo.All.Where(x => x.PalletCode == PalletCode).FirstOrDefault();
+            return _palletRepo.All.FirstOrDefault(x => x.PalletCode == palletCode);
         }
 
-        public Pallet GetbyId(int PalletId)
+        public Pallet GetbyId(int palletId)
         {
-            return _palletRepo.Find(PalletId);
-
+            return _palletRepo.Find(palletId);
         }
 
         public IQueryable<Pallet> GetList()
@@ -102,6 +102,36 @@ namespace PalletManagement.Core.Services
             }
             return unitOfWork.SaveChanges();
         }
+
+        public List<Pallet> ReadPalletsFromExcel(string filePath)
+        {
+            DataTable dt = new DataTable();
+            const string sql = "SELECT * from [Sheet1$]";
+            var connectionString = $"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {filePath}; Extended Properties = 'Excel 12.0;HDR=yes'";
+
+            using (var conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                using (var cmd = new OleDbCommand(sql, conn))
+                {
+                    using (OleDbDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr == null) return null;
+                        dt.Load(rdr);
+
+                        var palletList = dt.AsEnumerable()
+                            .Select(m => new Pallet()
+                            {
+                                PalletCode = m.Field<string>("PalletCode"),
+                            })
+                            .ToList();
+
+                        return palletList;
+                    }
+                }
+            }
+        }
+
     }
 
 }

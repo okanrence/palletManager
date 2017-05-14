@@ -46,12 +46,11 @@ namespace PalletManagement.Core.Services
             return unitOfWork.SaveChanges();
         }
      
-        public Customer GetbyId(int CustomerId)
+        public Customer GetbyId(int customerId)
         {
             return
-                _customerRepo.All
-                .AsNoTracking().Where(x => x.CustomerId == CustomerId)
-                .FirstOrDefault();
+                _customerRepo.All.AsNoTracking()
+                .FirstOrDefault(x => x.CustomerId == customerId);
         }
 
         public IQueryable<Customer> GetList()
@@ -59,9 +58,9 @@ namespace PalletManagement.Core.Services
             return _customerRepo.All.AsNoTracking();
         }
 
-        public int Delete(int CustomerId)
+        public int Delete(int customerId)
         {
-            var oCustomer = GetbyId(CustomerId);
+            var oCustomer = GetbyId(customerId);
             _customerRepo.Delete(oCustomer);
             return unitOfWork.SaveChanges();
         }

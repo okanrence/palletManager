@@ -70,9 +70,10 @@ namespace PalletManagement.Web.Setup
             {
                 if (ddlCustomer.SelectedIndex > 0)
                 {
-                    ddlFacilities.DataSource = _customerService.GetList()
-                                    .Where(x => x.CustomerId == customerId)
-                                    .FirstOrDefault().Facilities
+                    ddlFacilities.DataSource = _customerService
+                                    .GetList()
+                                    .FirstOrDefault(x => x.CustomerId == customerId)
+                        ?.Facilities
                                     .ToList();
                     ddlFacilities.DataTextField = "FacilityName";
                     ddlFacilities.DataValueField = "FacilityId";
@@ -81,7 +82,7 @@ namespace PalletManagement.Web.Setup
                 else
                 {
                     ddlFacilities.Items.Clear();
-                   // ddlFacilities.DataBind();
+                    // ddlFacilities.DataBind();
                 }
             }
             catch (Exception ex)
@@ -96,7 +97,7 @@ namespace PalletManagement.Web.Setup
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            if (isUpdateMode())
+            if (IsUpdateMode())
                 UpdateUser();
             else
                 AddUser();
@@ -104,11 +105,9 @@ namespace PalletManagement.Web.Setup
             LoadUsers();
         }
 
-        private bool isUpdateMode()
+        private bool IsUpdateMode()
         {
-            if (btnSubmit.Text == "Update")
-                return true;
-            return false;
+            return btnSubmit.Text == @"Update";
         }
         private void LoadUsers()
         {
@@ -124,14 +123,12 @@ namespace PalletManagement.Web.Setup
                 LogHelper.Log(ex);
                 displayMessage(ex.Message, false);
             }
-
         }
 
         private void AddUser()
         {
             try
             {
-
                 int? assignedFacilityId = null;
 
                 if (ddlFacilities.SelectedIndex >= 0)
@@ -149,7 +146,6 @@ namespace PalletManagement.Web.Setup
                     StaffNumber = txtStaffNumber.Text.Trim(),
                     UserRoleId = int.Parse(ddlUserRole.SelectedValue),
                     AssignedFacilityId = assignedFacilityId
-
                 };
 
                 _userService.Add(oUser);
@@ -208,11 +204,7 @@ namespace PalletManagement.Web.Setup
         private void displayMessage(string message, bool isSuccessMsg)
         {
             ErrorMessage.Visible = true;
-            if (isSuccessMsg)
-                FailureText.Text = $"{message}";
-            else
-                FailureText.Text = $"ERROR:{message}";
-
+            FailureText.Text = isSuccessMsg ? $"{message}" : $"ERROR:{message}";
         }
 
         private void SelectUser(int userId)

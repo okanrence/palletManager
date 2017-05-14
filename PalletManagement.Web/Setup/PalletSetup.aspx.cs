@@ -4,6 +4,8 @@ using PalletManagement.Core.Domain;
 using PalletManagement.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -23,11 +25,10 @@ namespace PalletManagement.Web.Setup
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                LoadCustomers();
+            if (IsPostBack) return;
 
-            }
+            LoadCustomers();
+            MultiView1.SetActiveView(multipleEntry);
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -35,8 +36,8 @@ namespace PalletManagement.Web.Setup
             ErrorMessage.Visible = false;
             if (isSingleMode())
                 AddSinglePallet();
-            else
-                AddMulitiplePallets();
+            //else
+                //AddMulitiplePallets();
 
             // LoadPallets();
         }
@@ -47,7 +48,7 @@ namespace PalletManagement.Web.Setup
                 return true;
             return false;
         }
-      
+
         private void AddSinglePallet()
         {
             try
@@ -80,50 +81,50 @@ namespace PalletManagement.Web.Setup
             }
         }
 
-        private void AddMulitiplePallets()
-        {
-            var alreadyAddedPallets = string.Empty;
+        //private void AddMulitiplePallets()
+        //{
+        //    var alreadyAddedPallets = string.Empty;
 
-            var startSerial = int.Parse(txtStartSerial.Text);
-            var endSerial = int.Parse(txtEndSerial.Text);
+        //    var startSerial = int.Parse(txtStartSerial.Text);
+        //    var endSerial = int.Parse(txtEndSerial.Text);
 
-            if (endSerial > startSerial){
-                displayMessage("End Serial cannot be greated than Start Serial", false);
-                return;
-            }
-            var PalletList = new List<Pallet>();
-            for (var i = startSerial; i <= endSerial; i++)
-            {
-                var oPallet = new Pallet()
-                {
-                    FacilityId = int.Parse(ddlPlant.SelectedValue),
-                    DateAdded = DateTime.Now,
-                    PalletCode = i.ToString(),
-                    StatusId = (int)PALLET_STATUS.Available
-                };
-                if (!alreadyExists(oPallet.PalletCode))
-                {
-                    PalletList.Add(oPallet);
-                }
-                else
-                {
-                    alreadyAddedPallets += $"{oPallet.PalletCode}|";
-                }
-            }
-            if (alreadyAddedPallets.EndsWith("|"))
-                alreadyAddedPallets = alreadyAddedPallets.Remove(alreadyAddedPallets.Length - 1, 1);
+        //    if (endSerial > startSerial){
+        //        displayMessage("End Serial cannot be greated than Start Serial", false);
+        //        return;
+        //    }
+        //    var PalletList = new List<Pallet>();
+        //    for (var i = startSerial; i <= endSerial; i++)
+        //    {
+        //        var oPallet = new Pallet()
+        //        {
+        //            FacilityId = int.Parse(ddlPlant.SelectedValue),
+        //            DateAdded = DateTime.Now,
+        //            PalletCode = i.ToString(),
+        //            StatusId = (int)PALLET_STATUS.Available
+        //        };
+        //        if (!alreadyExists(oPallet.PalletCode))
+        //        {
+        //            PalletList.Add(oPallet);
+        //        }
+        //        else
+        //        {
+        //            alreadyAddedPallets += $"{oPallet.PalletCode}|";
+        //        }
+        //    }
+        //    if (alreadyAddedPallets.EndsWith("|"))
+        //        alreadyAddedPallets = alreadyAddedPallets.Remove(alreadyAddedPallets.Length - 1, 1);
 
-            var appendDisplay = string.Empty;
-            if (!string.IsNullOrEmpty(alreadyAddedPallets))
-                appendDisplay = $"The following pallets already exists: { alreadyAddedPallets }";
+        //    var appendDisplay = string.Empty;
+        //    if (!string.IsNullOrEmpty(alreadyAddedPallets))
+        //        appendDisplay = $"The following pallets already exists: { alreadyAddedPallets }";
 
-            var no = _palletService.Add(PalletList);
-            ResetForm();
-            displayMessage($"{no} Pallets Added Successfully. {appendDisplay}", true);
-        }
+        //    var no = _palletService.Add(PalletList);
+        //    ResetForm();
+        //    displayMessage($"{no} Pallets Added Successfully. {appendDisplay}", true);
+        //}
         private bool alreadyExists(string palletCode)
         {
-            return _palletService.GetList().Where(x => x.PalletCode == palletCode).Any();
+            return _palletService.GetList().Any(x => x.PalletCode == palletCode);
         }
         private void UpdatePallet()
         {
@@ -159,7 +160,28 @@ namespace PalletManagement.Web.Setup
                 FailureText.Text = $"ERROR:{message}";
 
         }
+       
+        private void GetExcel()
+        {
+            string folderPath = Server.MapPath("~/Files/");
 
+            //Check whether Directory (Folder) exists.
+            if (!Directory.Exists(folderPath))
+            {
+                //If Directory (Folder) does not exists. Create it.
+                Directory.CreateDirectory(folderPath);
+            }
+
+            //Save the File to the Directory (Folder).
+            var filePath = folderPath + Path.GetFileName(FileUpload1.FileName);
+            FileUpload1.SaveAs(filePath);
+
+            //Display the success message.
+            var listFromExcel = _palletService.ReadPalletsFromExcel(filePath);
+
+            gdvPallets.DataSource = listFromExcel;
+
+        }
         private void SelectPallet(EventArgs e)
         {
             try
@@ -187,10 +209,7 @@ namespace PalletManagement.Web.Setup
 
         private void ResetForm()
         {
-            txtEndSerial.Text = string.Empty;
             txtStartSerial.Text = string.Empty;
-            lblStartSerial.Text = "Start Serial No";
-            txtEndSerial.Enabled = true;
             ddlCustomer.SelectedIndex = 0;
             hdfPalletId.Value = string.Empty;
             //btnSubmit.Text = "Submit";
@@ -198,30 +217,21 @@ namespace PalletManagement.Web.Setup
             //Response.Redirect(Page.Request.RawUrl);
         }
 
-
-        private void DeletePallet(GridViewDeleteEventArgs e)
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
-
-            }
-        }
-
         private void LoadFacilities(int customerId)
         {
             try
             {
-                ddlPlant.DataSource = _customerService.GetList()
-                    .Where(x => x.CustomerId == customerId)
-                    .FirstOrDefault().Facilities
-                    .Where(x => x.FacilityType == FACILITY_TYPES.PLANT)
-                    .ToList();
+                var customer = _customerService.GetList()
+                    .Where(x => x.CustomerId == customerId).Include(x=> x.Facilities)
+                    .FirstOrDefault();
+                if (customer != null)
+                {
+                    var facilities = customer
+                        .Facilities
+                        .Where(x => x.FacilityType == FACILITY_TYPES.PLANT)
+                        .ToList();
+                    ddlPlant.DataSource = facilities;
+                }
                 ddlPlant.DataTextField = "FacilityName";
                 ddlPlant.DataValueField = "FacilityId";
                 ddlPlant.DataBind();
@@ -256,23 +266,30 @@ namespace PalletManagement.Web.Setup
 
         protected void rdbSetupType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isSingleMode())
-            {
-                txtEndSerial.Enabled = false;
-                lblStartSerial.Text = "Serial No";
-
-            }
-            else
-            {
-                txtEndSerial.Enabled = true;
-                lblStartSerial.Text = "Start Serial No";
-            }
-
-            txtEndSerial.Text = string.Empty;
+            //switch (rdbSetupType.SelectedValue)
+            //{
+            //    case "0":
+            //        lblStartSerial.Text = "Serial No";
+            //        FileUpload1.Enabled = false;
+            //        break;
+            //    case "1":
+            //        lblStartSerial.Text = "Start Serial No";
+            //        FileUpload1.Enabled = false;
+            //        break;
+            //    case "2":
+            //        lblStartSerial.Text = "Serial No";
+            //        FileUpload1.Enabled = true;
+            //        break;
+            //}
+            MultiView1.SetActiveView(isSingleMode() ? singleEntry : multipleEntry);
             txtStartSerial.Text = string.Empty;
             ddlCustomer.SelectedIndex = 0;
             ddlPlant.SelectedIndex = 0;
         }
 
+        protected void btnExtract_Click(object sender, EventArgs e)
+        {
+            GetExcel();
+        }
     }
 }

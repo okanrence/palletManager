@@ -19,7 +19,8 @@ namespace PalletManagement.Core.Domain
         [MaxLength(50)]
         public string LastName { get; set; }
         [MaxLength(200)]
-        public string FullName { get { return $"{FirstName} {LastName}"; } }
+        public string FullName => $"{FirstName} {LastName}";
+
         [Index]
         [MaxLength(20)]
         public string StaffNumber { get; set; }

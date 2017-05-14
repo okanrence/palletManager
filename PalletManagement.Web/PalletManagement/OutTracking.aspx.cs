@@ -27,15 +27,21 @@ namespace PalletManagement.Web.Setup
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (IsPostBack) return;
 
-            if (!IsPostBack)
+            CurrentUser = Session["CurrentUser"] as User;
+            displayShipmentNumber();
+            if (CurrentUser != null)
             {
-                CurrentUser = Session["CurrentUser"] as User;
-                txtShipmentNumber.Text = _shipmentService.GetShipmentNumber(CurrentUser.AssignedFacility.FacilityName);
                 LoadPallets(CurrentUser.AssignedFacility.FacilityId);
                 LoadFacilities(CurrentUser.AssignedFacility.CustomerId);
-                LoadShipments();
             }
+            LoadShipments();
+        }
+
+        private void displayShipmentNumber()
+        {
+            txtShipmentNumber.Text = _shipmentService.GetShipmentNumber(CurrentUser.AssignedFacility.FacilityName);
         }
 
         private void LoadShipments()
@@ -58,6 +64,7 @@ namespace PalletManagement.Web.Setup
 
             LoadPallets(CurrentUser.AssignedFacilityId.Value);
             LoadShipments();
+            displayShipmentNumber();
         }
         private void SaveShipment()
         {
@@ -80,13 +87,22 @@ namespace PalletManagement.Web.Setup
                         PalletList = SerializationServices.SerializeJson(selectedPallets),
                         NoOfPallets = selectedPallets.Count,
                         IsCompleted = false
-                        , Pallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList()
                     };
-
                     _shipmentService.Add(oShipment);
+
+
+                    var palletsToAdd = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList();
+
+                    foreach (var pallet in palletsToAdd)
+                    {
+                        oShipment.Pallets.Add(pallet);
+
+                    }
+                    _shipmentService.Update(oShipment);
+
                     var modifiedPallets = new List<Pallet>();
-                    var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
-                    foreach (var pallet in oPallets)
+                    //var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
+                    foreach (var pallet in palletsToAdd)
                     {
                         pallet.LastMovementDate = DateTime.Now;
                         pallet.CurrentShipmentId = oShipment.ShipmentId;
@@ -299,14 +315,20 @@ namespace PalletManagement.Web.Setup
         protected void gdvShipment_SelectedIndexChanged(object sender, EventArgs e)
         {
             var shipmentId = int.Parse(gdvShipment.SelectedDataKey["ShipmentId"].ToString());
+            ErrorMessage.Visible = false;
+            displayShipmentNumber();
+
             SelectShipment(shipmentId);
         }
 
         protected void gdvShipment_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             var shipmentId = int.Parse(e.Keys["ShipmentId"].ToString());
+            ErrorMessage.Visible = false;
             DeleteShipment(shipmentId);
             LoadPallets(CurrentUser.AssignedFacilityId.Value);
+            displayShipmentNumber();
+
         }
     }
 }

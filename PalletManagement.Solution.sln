@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAppTools", "MyAppTools\My
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalletManagement.Web", "PalletManagement.Web\PalletManagement.Web.csproj", "{98B35233-20B4-4FC6-BC79-64EEA2EE0C10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication2", "WebApplication2\WebApplication2.csproj", "{34AE0F13-165D-4FF0-925B-9D9B5E190033}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PalletManagement.UI", "PalletManagement.UI\PalletManagement.UI.csproj", "{FE9E74D1-7650-4C67-8652-8522A63E4BBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{98B35233-20B4-4FC6-BC79-64EEA2EE0C10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98B35233-20B4-4FC6-BC79-64EEA2EE0C10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98B35233-20B4-4FC6-BC79-64EEA2EE0C10}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34AE0F13-165D-4FF0-925B-9D9B5E190033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34AE0F13-165D-4FF0-925B-9D9B5E190033}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34AE0F13-165D-4FF0-925B-9D9B5E190033}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34AE0F13-165D-4FF0-925B-9D9B5E190033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE9E74D1-7650-4C67-8652-8522A63E4BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9E74D1-7650-4C67-8652-8522A63E4BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9E74D1-7650-4C67-8652-8522A63E4BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9E74D1-7650-4C67-8652-8522A63E4BBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
