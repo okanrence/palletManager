@@ -37,7 +37,7 @@
                                 <asp:FileUpload ID="FileUpload1" runat="server" />
                             </div>
                             <div class="col-md-4">
-                                <asp:Button ID="btnExtract" runat="server" Text="Extract File" OnClick="btnExtract_Click" />
+                                <asp:Button ID="btnExtract" runat="server" Text="Extract File" OnClick="btnExtract_Click" CausesValidation="False" />
                             </div>
                         </div>
                     </asp:View>

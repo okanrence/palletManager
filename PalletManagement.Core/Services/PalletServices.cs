@@ -122,7 +122,7 @@ namespace PalletManagement.Core.Services
                         var palletList = dt.AsEnumerable()
                             .Select(m => new Pallet()
                             {
-                                PalletCode = m.Field<string>("PalletCode"),
+                                PalletCode = m.Field<string>("PalletCode")
                             })
                             .ToList();
 

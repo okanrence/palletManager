@@ -173,13 +173,14 @@ namespace PalletManagement.Web.Setup
             }
 
             //Save the File to the Directory (Folder).
-            var filePath = folderPath + Path.GetFileName(FileUpload1.FileName);
+            var filePath = $"{folderPath}{Path.GetFileName(FileUpload1.FileName)}{DateTime.Now.ToString("yyyyMMddhhmmss")}";
             FileUpload1.SaveAs(filePath);
 
             //Display the success message.
             var listFromExcel = _palletService.ReadPalletsFromExcel(filePath);
 
             gdvPallets.DataSource = listFromExcel;
+            gdvPallets.DataBind();
 
         }
         private void SelectPallet(EventArgs e)
