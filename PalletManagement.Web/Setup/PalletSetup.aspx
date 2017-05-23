@@ -29,7 +29,7 @@
                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="txtStartSerial" CssClass="text-danger" ErrorMessage="required." />--%>
                             </div>
                         </div>
-                 </asp:View>
+                    </asp:View>
                     <asp:View ID="multipleEntry" runat="server">
                         <div class="form-group">
                             <asp:Label runat="server" ID="lblExcel" AssociatedControlID="txtStartSerial" CssClass="col-md-4 control-label">Select Excel File</asp:Label>
@@ -65,23 +65,29 @@
                 <div class="form-group">
                     <div class="col-md-offset-4 col-md-8">
                         <asp:Button runat="server" Text="Submit" CssClass="btn btn-primary" ID="btnSubmit" OnClick="btnSubmit_Click" />
-                        <a href="PalletsView.aspx" runat="server" class="btn btn-default">View Pallets List</a>
-                        <%--<asp:LinkButton ID="lnkViewList" runat="server" class="btn btn-default" OnClick="lnkViewList_Click">View Pallets List</asp:LinkButton>--%>
+                        <%--<a href="PalletsView.aspx" runat="server" class="btn btn-default">View Pallets List</a>--%>
                         <asp:HiddenField ID="hdfPalletId" runat="server" />
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-horizontal"></div>
+         <div class="col-md-2"></div>
+        <div class="col-md-4">
+            <div class="form-horizontal">
+              <%--   <h4>Add Pallets</h4>--%>
+                <div class="form-group" style="padding-top:60px">
+                    <asp:GridView ID="gdvPallets" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="PalletId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal">
+                        <Columns>
+                            <asp:BoundField DataField="PalletId" HeaderText="No" />
+                            <asp:BoundField DataField="PalletCode" HeaderText="Pallet Code" />
+                        </Columns>
+                        <HeaderStyle BackColor="#1A4874" ForeColor="White" />
+                    </asp:GridView>
+                    <asp:Label ID="uplaodInfo" runat="server" Text=""></asp:Label>
+                </div>
+            </div>
         </div>
-        <asp:GridView ID="gdvPallets" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="PalletId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal">
-            <Columns>
-                <asp:BoundField DataField="No" HeaderText="No" />
-                <asp:BoundField DataField="PalletCode" HeaderText="Pallet Code" />
-            </Columns>
-            <HeaderStyle BackColor="#1A4874" ForeColor="White" />
-        </asp:GridView>
+             
     </div>
 
 

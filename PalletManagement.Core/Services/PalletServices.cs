@@ -105,6 +105,7 @@ namespace PalletManagement.Core.Services
 
         public List<Pallet> ReadPalletsFromExcel(string filePath)
         {
+            List<Pallet> formattedPalletList = null;
             DataTable dt = new DataTable();
             const string sql = "SELECT * from [Sheet1$]";
             var connectionString = $"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = {filePath}; Extended Properties = 'Excel 12.0;HDR=yes'";
@@ -123,13 +124,22 @@ namespace PalletManagement.Core.Services
                             .Select(m => new Pallet()
                             {
                                 PalletCode = m.Field<string>("PalletCode")
-                            })
-                            .ToList();
+                            }).ToList();
+                        if (palletList.Count() > 0)
+                        {
+                            formattedPalletList = new List<Pallet>();
+                            foreach (var pallet in palletList)
+                            {
+                                pallet.PalletId = palletList.IndexOf(pallet) + 1;
+                                formattedPalletList.Add(pallet);
+                            }
 
-                        return palletList;
+                        }
+
                     }
                 }
             }
+            return formattedPalletList;
         }
 
     }

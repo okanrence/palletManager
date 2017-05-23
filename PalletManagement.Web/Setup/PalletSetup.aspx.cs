@@ -34,10 +34,11 @@ namespace PalletManagement.Web.Setup
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ErrorMessage.Visible = false;
+            uplaodInfo.Text = "";
             if (isSingleMode())
                 AddSinglePallet();
-            //else
-                //AddMulitiplePallets();
+            else
+                AddMultiplePallets();
 
             // LoadPallets();
         }
@@ -78,6 +79,49 @@ namespace PalletManagement.Web.Setup
                 LogHelper.Log(ex);
                 displayMessage(ex.Message, false);
 
+            }
+        }
+        private void AddMultiplePallets()
+        {
+            try
+            {
+                var palletList = new List<Pallet>();
+                var alreadyAddedPallets = string.Empty;
+                foreach (GridViewRow row in gdvPallets.Rows)
+                {
+                    var pallet = new Pallet()
+                    {
+                        FacilityId = int.Parse(ddlPlant.SelectedValue),
+                        DateAdded = DateTime.Now,
+                        PalletCode = row.Cells[1].Text,
+                        StatusId = (int)PALLET_STATUS.Available
+                    };
+
+                    if (!alreadyExists(pallet.PalletCode))
+                    {
+                        palletList.Add(pallet);
+                    }
+                    else
+                    {
+                        alreadyAddedPallets += $"{pallet.PalletCode}|";
+                    }
+                }
+                if (alreadyAddedPallets.EndsWith("|"))
+                    alreadyAddedPallets = alreadyAddedPallets.Remove(alreadyAddedPallets.Length - 1, 1);
+
+                var appendDisplay = string.Empty;
+
+                if (!string.IsNullOrEmpty(alreadyAddedPallets))
+                    appendDisplay = $"The following pallets already exists: { alreadyAddedPallets }";
+
+                var no = _palletService.Add(palletList);
+                ResetForm();
+                displayMessage($"{no} Pallets Uploaded. {appendDisplay}", true);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex);
+                displayMessage(ex.Message, false);
             }
         }
 
@@ -160,7 +204,7 @@ namespace PalletManagement.Web.Setup
                 FailureText.Text = $"ERROR:{message}";
 
         }
-       
+
         private void GetExcel()
         {
             string folderPath = Server.MapPath("~/Files/");
@@ -182,30 +226,8 @@ namespace PalletManagement.Web.Setup
             gdvPallets.DataSource = listFromExcel;
             gdvPallets.DataBind();
 
-        }
-        private void SelectPallet(EventArgs e)
-        {
-            try
-            {
-                //hdfPalletId.Value = gdvPallets.SelectedDataKey["PalletId"].ToString();
-                //txtPalletName.Text = gdvPallets.Rows[gdvPallets.SelectedIndex].Cells[1].Text.ToString();
-                //txtAddress.Text = gdvPallets.Rows[gdvPallets.SelectedIndex].Cells[2].Text.ToString();
-                //txtEmailAddress.Text = gdvPallets.Rows[gdvPallets.SelectedIndex].Cells[3].Text.ToString();
-                //txtContactPerson.Text = gdvPallets.Rows[gdvPallets.SelectedIndex].Cells[4].Text.ToString();
-                //txtPhoneNumber.Text = gdvPallets.Rows[gdvPallets.SelectedIndex].Cells[5].Text.ToString();
+            uplaodInfo.Text = $"{listFromExcel.Count()} pallets found in excel sheet. Please complete the form on the left and click on the Submit button to upload";
 
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
-
-            }
-        }
-        protected void gdvPallets_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SelectPallet(e);
-            btnSubmit.Text = "Update";
         }
 
         private void ResetForm()
@@ -215,6 +237,7 @@ namespace PalletManagement.Web.Setup
             hdfPalletId.Value = string.Empty;
             //btnSubmit.Text = "Submit";
             ErrorMessage.Visible = false;
+            uplaodInfo.Text = "";
             //Response.Redirect(Page.Request.RawUrl);
         }
 
@@ -223,7 +246,7 @@ namespace PalletManagement.Web.Setup
             try
             {
                 var customer = _customerService.GetList()
-                    .Where(x => x.CustomerId == customerId).Include(x=> x.Facilities)
+                    .Where(x => x.CustomerId == customerId).Include(x => x.Facilities)
                     .FirstOrDefault();
                 if (customer != null)
                 {
@@ -267,21 +290,6 @@ namespace PalletManagement.Web.Setup
 
         protected void rdbSetupType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //switch (rdbSetupType.SelectedValue)
-            //{
-            //    case "0":
-            //        lblStartSerial.Text = "Serial No";
-            //        FileUpload1.Enabled = false;
-            //        break;
-            //    case "1":
-            //        lblStartSerial.Text = "Start Serial No";
-            //        FileUpload1.Enabled = false;
-            //        break;
-            //    case "2":
-            //        lblStartSerial.Text = "Serial No";
-            //        FileUpload1.Enabled = true;
-            //        break;
-            //}
             MultiView1.SetActiveView(isSingleMode() ? singleEntry : multipleEntry);
             txtStartSerial.Text = string.Empty;
             ddlCustomer.SelectedIndex = 0;
