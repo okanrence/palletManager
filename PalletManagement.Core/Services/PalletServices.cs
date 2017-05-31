@@ -22,6 +22,9 @@ namespace PalletManagement.Core.Services
         IQueryable<Pallet> GetList();
         object GetDisplayList(List<Pallet> oPallets);
         List<Pallet> ReadPalletsFromExcel(string filePath);
+        int Attach(Pallet oPallet);
+        IQueryable<Pallet> GetbyShipmentId(int shipmentId);
+        //int SaveChanges();
 
     }
 
@@ -38,7 +41,11 @@ namespace PalletManagement.Core.Services
             _palletRepo.Add(oPallet);
             return this.unitOfWork.SaveChanges();
         }
-
+        public int Attach(Pallet oPallet)
+        {
+            _palletRepo.Attach(oPallet);
+            return this.unitOfWork.SaveChanges();
+        }
         public int Add(List<Pallet> oPallets)
         {
             foreach (var oPallet in oPallets)
@@ -66,6 +73,10 @@ namespace PalletManagement.Core.Services
             return _palletRepo.All.FirstOrDefault(x => x.PalletCode == palletCode);
         }
 
+        public IQueryable<Pallet> GetbyShipmentId(int shipmentId)
+        {
+            return this.GetList().Where(x => x.CurrentShipmentId == shipmentId);
+        }
         public Pallet GetbyId(int palletId)
         {
             return _palletRepo.Find(palletId);
@@ -75,6 +86,11 @@ namespace PalletManagement.Core.Services
         {
             return _palletRepo.All.AsNoTracking();
         }
+
+        //public int SaveChanges()
+        //{
+        //    return unitOfWork.SaveChanges();
+        //}
 
         public object GetDisplayList(List<Pallet> oPallets)
         {

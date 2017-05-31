@@ -55,7 +55,7 @@ namespace PalletManagement.Core.Services
 
         public IQueryable<Customer> GetList()
         {
-            return _customerRepo.All.AsNoTracking();
+            return _customerRepo.All.AsNoTracking().Include(x=>x.Facilities);
         }
 
         public int Delete(int customerId)

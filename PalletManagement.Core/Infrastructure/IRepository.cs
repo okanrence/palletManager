@@ -15,6 +15,7 @@ namespace PalletManagement.Core.Infrastructure
         void Delete(T entity);
         void Edit(T entity);
         T Find(params object[] keyValues);
+        void Attach(T entity);
 
     }
 
@@ -48,6 +49,12 @@ where T : class
         public virtual void Add(T entity)
         {
             _context.Set<T>().Add(entity);
+        }
+        public virtual void Attach(T entity)
+        {
+
+           if( _context.Entry(entity).State == EntityState.Detached)
+                _context.Set<T>().Attach(entity);
         }
 
         public virtual void Edit(T entity)

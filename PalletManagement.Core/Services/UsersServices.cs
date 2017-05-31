@@ -51,8 +51,9 @@ namespace PalletManagement.Core.Services
             originalUser.ProfileStatus = oUser.ProfileStatus;
             originalUser.StaffNumber = oUser.StaffNumber;
             originalUser.UserRoleId = oUser.UserRoleId;
-            originalUser.AssignedFacilityId = oUser.AssignedFacilityId;
+           // originalUser.AssignedFacility = oUser.AssignedFacility;
             originalUser.LastLoginDate = oUser.LastLoginDate;
+            originalUser.AssignedFacilityId = oUser.AssignedFacilityId;
 
             _userRepo.Edit(originalUser);
 
@@ -61,9 +62,7 @@ namespace PalletManagement.Core.Services
 
         public User GetbyId(int userId)
         {
-            return
-               GetList()
-                .FirstOrDefault(x => x.UserId == userId);
+            return _userRepo.Find(userId);
         }
 
         public IQueryable<User> GetList()

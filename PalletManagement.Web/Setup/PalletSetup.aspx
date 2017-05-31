@@ -83,7 +83,7 @@
                         </Columns>
                         <HeaderStyle BackColor="#1A4874" ForeColor="White" />
                     </asp:GridView>
-                    <asp:Label ID="uplaodInfo" runat="server" Text=""></asp:Label>
+                    <asp:Label ID="lblUploadInfo" runat="server" Text="" ForeColor ="Blue"></asp:Label>
                 </div>
             </div>
         </div>

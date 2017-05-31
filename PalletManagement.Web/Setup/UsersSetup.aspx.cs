@@ -16,12 +16,14 @@ namespace PalletManagement.Web.Setup
         private readonly IUserServices _userService = null;
         private readonly IUserRoleServices _userRoleService = null;
         private readonly ICustomerServices _customerService = null;
+        private readonly IFacilityServices _facilityServices = null;
 
         public UserSetup()
         {
             _userService = new UserServices();
             _userRoleService = new UserRoleServices();
             _customerService = new CustomerServices();
+            _facilityServices = new FacilityServices();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -70,11 +72,12 @@ namespace PalletManagement.Web.Setup
             {
                 if (ddlCustomer.SelectedIndex > 0)
                 {
-                    ddlFacilities.DataSource = _customerService
+             var customerFacilities  = _customerService
                                     .GetList()
                                     .FirstOrDefault(x => x.CustomerId == customerId)
                         ?.Facilities
                                     .ToList();
+                    ddlFacilities.DataSource = customerFacilities;
                     ddlFacilities.DataTextField = "FacilityName";
                     ddlFacilities.DataValueField = "FacilityId";
                     ddlFacilities.DataBind();
@@ -181,7 +184,8 @@ namespace PalletManagement.Web.Setup
                     StaffNumber = txtStaffNumber.Text.Trim(),
                     UserRoleId = int.Parse(ddlUserRole.SelectedValue),
                     UserId = int.Parse(hdfUserId.Value),
-                    AssignedFacilityId = assignedFacilityId
+                    AssignedFacilityId = assignedFacilityId,
+                  //  AssignedFacility = assignedFacilityId.HasValue?  _facilityServices.GetbyId(assignedFacilityId.Value) : null                      
                 };
 
                 if (ddlProfileStatus.SelectedValue == "D")
@@ -212,7 +216,8 @@ namespace PalletManagement.Web.Setup
             try
             {
 
-                var oUser = _userService.GetbyId(userId);
+
+                var oUser = _userService.GetList().SingleOrDefault(x => x.UserId == userId);
                 txtEmailAddress.Text = oUser.EmailAddress;
                 txtFirstName.Text = oUser.FirstName;
                 txtLastName.Text = oUser.LastName;
@@ -249,6 +254,9 @@ namespace PalletManagement.Web.Setup
             txtStaffNumber.Text = string.Empty;
             ddlUserRole.SelectedIndex = 0;
             ddlProfileStatus.SelectedIndex = 0;
+            ddlCustomer.SelectedIndex = 0;
+            
+            ddlFacilities.DataSource= null; ddlFacilities.DataBind();
         }
 
 

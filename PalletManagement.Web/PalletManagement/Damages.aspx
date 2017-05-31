@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Shipments.aspx.cs" Inherits="PalletManagement.Web.Setup.Shipments" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Damages.aspx.cs" Inherits="PalletManagement.Web.Setup.Damages" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
         rel="stylesheet" type="text/css" />
-     <div class="row">
+    <div class="row">
         <div class="form-group">
             <div class="col-md-8">
                 <div class="form-horizontal">

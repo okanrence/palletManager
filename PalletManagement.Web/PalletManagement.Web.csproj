@@ -76,8 +76,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -202,6 +202,7 @@
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Checkbox.css" />
     <Content Include="Content\Site.css" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="Error.aspx" />
@@ -217,6 +218,7 @@
     <None Include="Properties\PublishProfiles\FileDepoy.pubxml" />
     <None Include="Properties\PublishProfiles\WebDeploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
+    <Content Include="PalletManagement\Damages.aspx" />
     <Content Include="PalletManagement\Shipments.aspx" />
     <Content Include="PalletManagement\InTracking.aspx" />
     <Content Include="PalletManagement\OutTracking.aspx" />
@@ -434,6 +436,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="PalletManagement\Damages.aspx.cs">
+      <DependentUpon>Damages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PalletManagement\Damages.aspx.designer.cs">
+      <DependentUpon>Damages.aspx</DependentUpon>
+    </Compile>
     <Compile Include="PalletManagement\Shipments.aspx.cs">
       <DependentUpon>Shipments.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

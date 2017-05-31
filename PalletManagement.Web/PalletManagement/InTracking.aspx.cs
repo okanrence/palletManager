@@ -65,25 +65,21 @@ namespace PalletManagement.Web.Setup
                     oShipment.InTrackerId = CurrentUser.UserId;
 
 
-                    var modifiedPallets = new List<Pallet>();
-                    var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
-
-                    foreach (var pallet in oPallets)
+                    var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList();
+                    var updatedPallets = oPallets.Select(c =>
                     {
-                        if (selectedPallets.Contains(pallet.PalletCode))
-                            pallet.CurrentShipmentId = null;
+                        if (selectedPallets.Contains(c.PalletCode))
+                            c.CurrentShipmentId = null;
                         else
-                            pallet.StatusId = (int)PALLET_STATUS.Unaccounted;
+                            c.StatusId = (int)PALLET_STATUS.Unaccounted;
+                        c.FacilityId = oShipment.ShipmentDestinationId;
+                        return c;
+                    }).ToList();
 
-                        pallet.FacilityId = oShipment.ShipmentDestinationId;
-                        modifiedPallets.Add(pallet);
-                    };
-
-                    _palletService.Update(modifiedPallets);
+                    _palletService.Update(updatedPallets);
                     _shipmentService.Update(oShipment);
                     tran.Complete();
                 }
-
 
                 //redirect to view shipment
                 ResetForm();

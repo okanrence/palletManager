@@ -20,6 +20,7 @@ namespace PalletManagement.Core.Services
         IQueryable<Shipment> GetList();
         object GetDisplayList(List<Shipment> oShipments);
         string GetShipmentNumber(string source);
+        int SaveChanges();
     }
 
     public class ShipmentServices : BaseService, IShipmentServices
@@ -86,7 +87,10 @@ namespace PalletManagement.Core.Services
 
         public IQueryable<Shipment> GetList()
         {
-            return _shipmentRepo.All.AsNoTracking();
+            return _shipmentRepo.All.AsNoTracking()
+                .Include(x => x.ShipmentSource)
+                .Include(x => x.ShipmentDestination)
+                .Include(x => x.ShipmentStatus);
         }
 
         public object GetDisplayList(List<Shipment> oShipments)
@@ -110,6 +114,11 @@ namespace PalletManagement.Core.Services
         }
         public string GetShipmentNumber(string source) { 
             return $"{source.Substring(0,2).ToUpper()}/{DateTime.Now.ToString("yyMMddss")}/{new Random().Next(1, 100).ToString("00")}";
+        }
+
+        public int SaveChanges()
+        {
+            return unitOfWork.SaveChanges();
         }
     }
 

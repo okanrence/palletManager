@@ -34,7 +34,7 @@ namespace PalletManagement.Web.Setup
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ErrorMessage.Visible = false;
-            uplaodInfo.Text = "";
+            lblUploadInfo.Text = "";
             if (isSingleMode())
                 AddSinglePallet();
             else
@@ -226,7 +226,7 @@ namespace PalletManagement.Web.Setup
             gdvPallets.DataSource = listFromExcel;
             gdvPallets.DataBind();
 
-            uplaodInfo.Text = $"{listFromExcel.Count()} pallets found in excel sheet. Please complete the form on the left and click on the Submit button to upload";
+            lblUploadInfo.Text = $"{listFromExcel.Count()} pallets found in excel sheet. Please complete the form on the left and click on the Submit button to upload";
 
         }
 
@@ -237,7 +237,7 @@ namespace PalletManagement.Web.Setup
             hdfPalletId.Value = string.Empty;
             //btnSubmit.Text = "Submit";
             ErrorMessage.Visible = false;
-            uplaodInfo.Text = "";
+            lblUploadInfo.Text = "";
             //Response.Redirect(Page.Request.RawUrl);
         }
 

@@ -24,7 +24,7 @@ namespace PalletManagement.Core.Domain
         [Index]
         [MaxLength(20)]
         public string StaffNumber { get; set; }
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string EmailAddress { get; set; }
         [StringLength(20)]
         public string PhoneNumber { get; set; }

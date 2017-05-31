@@ -90,25 +90,37 @@ namespace PalletManagement.Web.Setup
                     };
                     _shipmentService.Add(oShipment);
 
-
                     var palletsToAdd = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList();
 
-                    foreach (var pallet in palletsToAdd)
-                    {
-                        oShipment.Pallets.Add(pallet);
+                    //foreach (var pallet in palletsToAdd)
+                    //{
+                    //    _palletService.Attach(pallet);
+                    //    oShipment.Pallets.Add(pallet);
 
-                    }
-                    _shipmentService.Update(oShipment);
+                    //}
 
-                    var modifiedPallets = new List<Pallet>();
-                    //var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
-                    foreach (var pallet in palletsToAdd)
+                    //    _shipmentService.SaveChanges();
+
+                    //  _shipmentService.Update(oShipment);
+                    var updatedPallets = palletsToAdd.Select(c =>
                     {
-                        pallet.LastMovementDate = DateTime.Now;
-                        pallet.CurrentShipmentId = oShipment.ShipmentId;
-                        modifiedPallets.Add(pallet);
-                    };
-                    _palletService.Update(modifiedPallets);
+                        c.LastMovementDate = DateTime.Now;
+                        c.CurrentShipmentId = oShipment.ShipmentId;
+                        return c;
+                    }).ToList();
+
+                    //var modifiedPallets = new List<Pallet>();
+                    ////var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
+                    //foreach (var pallet in palletsToAdd)
+                    //{
+
+                    //    pallet.LastMovementDate = DateTime.Now;
+                    //    pallet.CurrentShipmentId = oShipment.ShipmentId;
+                    //    //_palletService.Attach(pallet);
+                    //    // modifiedPallets.Add(pallet);
+                    //};
+                    _palletService.Update(updatedPallets);
+                    _shipmentService.SaveChanges();
                     tran.Complete();
                 }
 
@@ -165,23 +177,38 @@ namespace PalletManagement.Web.Setup
 
                     var facilityPallets = _palletService.GetList().Where(x => x.FacilityId == CurrentUser.AssignedFacilityId).ToList();
 
-                    var palletsForUpdate = new List<Pallet>();
-                    foreach (var pallet in facilityPallets)
+                    var updatedPallets = facilityPallets.Select(c =>
                     {
-                        if (checkedPallets.Contains(pallet.PalletCode))
+                        if (checkedPallets.Contains(c.PalletCode))
                         {
-                            pallet.LastMovementDate = DateTime.Now;
-                            pallet.CurrentShipmentId = oShipment.ShipmentId;
+                            c.LastMovementDate = DateTime.Now;
+                            c.CurrentShipmentId = oShipment.ShipmentId;
                         }
                         else
                         {
-                            pallet.LastMovementDate = null;
-                            pallet.CurrentShipmentId = null;
+                            c.LastMovementDate = null;
+                            c.CurrentShipmentId = null;
                         }
-                        palletsForUpdate.Add(pallet);
-                    }
+                        return c;
+                    }).ToList();
+
+                    //var palletsForUpdate = new List<Pallet>();
+                    //foreach (var pallet in facilityPallets)
+                    //{
+                    //    if (checkedPallets.Contains(pallet.PalletCode))
+                    //    {
+                    //        pallet.LastMovementDate = DateTime.Now;
+                    //        pallet.CurrentShipmentId = oShipment.ShipmentId;
+                    //    }
+                    //    else
+                    //    {
+                    //        pallet.LastMovementDate = null;
+                    //        pallet.CurrentShipmentId = null;
+                    //    }
+                    //    palletsForUpdate.Add(pallet);
+                    //}
                     _shipmentService.Update(oShipment);
-                    _palletService.Update(palletsForUpdate);
+                    _palletService.Update(updatedPallets);
 
                     tran.Complete();
                 }
@@ -205,15 +232,16 @@ namespace PalletManagement.Web.Setup
                 var shipment = _shipmentService.GetbyId(shipmentId);
                 if (!shipment.IsCompleted)
                 {
-                    var modifiedPallets = new List<Pallet>();
-                    foreach (var pallet in shipment.Pallets)
-                    {
-                        pallet.CurrentShipmentId = null;
-                        modifiedPallets.Add(pallet);
-                    }
+                    var shipmentPallets = _palletService.GetbyShipmentId(shipmentId).ToList();
+                    var updatedPallets = shipmentPallets.Select(c => { c.CurrentShipmentId = null; return c; }).ToList();
+                    //foreach (var pallet in shipmentPallets)
+                    //{
+                    //    pallet.CurrentShipmentId = null;
+                    //    modifiedPallets.Add(pallet);
+                    //}
                     using (var transaction = new TransactionScope())
                     {
-                        _palletService.Update(modifiedPallets);
+                        _palletService.Update(updatedPallets);
                         _shipmentService.Delete(shipmentId);
                         transaction.Complete();
                     }
@@ -257,7 +285,7 @@ namespace PalletManagement.Web.Setup
             try
             {
                 var pallets = _palletService.GetList()
-                     .Where(x => x.FacilityId == facilityId && x.StatusId == (int)PALLET_STATUS.Available && (x.CurrentShipmentId == null || x.CurrentShipmentId == shipmentId))
+                     .Where(x => x.FacilityId == facilityId && x.StatusId == (int)PALLET_STATUS.Available && (x.CurrentShipmentId == null | x.CurrentShipmentId == shipmentId))
                     .ToList();
 
                 chkAvailablePatllets.DataSource = pallets;

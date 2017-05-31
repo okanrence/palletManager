@@ -10,10 +10,10 @@ namespace PalletManagement.Core.Domain
 {
     public class Shipment : baseDomain
     {
-        public Shipment()
-        {
-            this.Pallets = new HashSet<Pallet>();
-        }
+        //public Shipment()
+        //{
+        //    this.Pallets = new HashSet<Pallet>();
+        //}
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -48,7 +48,7 @@ namespace PalletManagement.Core.Domain
         public int NoOfPallets { get; set; }
         public bool IsCompleted { get; set; }
         //public bool IsCompleted { get { return this.ShipmentStatusId == (int)Services.SHIPMENT_STATUS.Incoming; } set() }
-        public virtual ICollection<Pallet> Pallets { get; set; }
+      //  public virtual ICollection<Pallet> Pallets { get; set; }
 
     }
 

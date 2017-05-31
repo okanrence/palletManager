@@ -112,7 +112,7 @@
                                 <asp:BoundField DataField="UserId" HeaderText="ID" />
                                 <asp:BoundField DataField="StaffNumber" HeaderText="Staff Number" />
                                 <asp:BoundField DataField="FullName" HeaderText="Full Name" />
-                                <asp:BoundField DataField="AssignedCustomer" HeaderText="Assigned Customer" />
+                                <%--<asp:BoundField DataField="AssignedCustomer" HeaderText="Assigned Customer" />--%>
                                 <asp:BoundField DataField="AssignedFacility" HeaderText="Facility" />
                                 <asp:BoundField DataField="UserRoleName" HeaderText="Role" />
                                 <asp:BoundField DataField="ProfileStatus" HeaderText="Status" />

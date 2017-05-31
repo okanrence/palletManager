@@ -3,16 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
         rel="stylesheet" type="text/css" />
-    <%-- <style type="text/css">
-        .chkChoice {
-            padding-left: 30px;
-            padding-right: 30px;
-        }
-
-        .chkChoice td {
-            padding-left: 20px;
-        }
-    </style>--%>
+   
     <div class="row form-horizontal">
         <asp:PlaceHolder runat="server" ID="ErrorMessage" Visible="false">
             <p class="text-danger">
@@ -20,10 +11,12 @@
             </p>
         </asp:PlaceHolder>
         <br />
+         <h4>In-Coming Pallets</h4>
+                <hr />
         <div class="col-md-8 form-group col-lg-10 bs-component ">
             <asp:GridView ID="gdvShipment" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="ShipmentId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal" OnSelectedIndexChanged="gdvShipment_SelectedIndexChanged">
                 <Columns>
-                     <asp:TemplateField HeaderText="Shipment Number">
+                    <asp:TemplateField HeaderText="Shipment Number">
                         <ItemTemplate>
                             <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False" Text='<%# Eval("ShipmentNumber") %>'></asp:LinkButton>
                         </ItemTemplate>
@@ -48,18 +41,13 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-horizontal">
-                <h4>In-Coming Pallets</h4>
-                <hr />
-
-
                 <div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="chkAvailablePatllets" CssClass="col-md-4 control-label">Select Pallets</asp:Label>
                     <div class="col-md-8 ">
-                        <asp:CheckBoxList ID="chkAvailablePatllets" runat="server" BorderStyle="None" RepeatDirection="Vertical" RepeatColumns="3" RepeatLayout="Flow" RenderWhenDataEmpty="True"></asp:CheckBoxList>
+                        <asp:Panel runat="server" ScrollBars="Auto" Height="210px" Wrap="true">
+                              <asp:CheckBoxList ID="chkAvailablePatllets" runat="server" BorderStyle="None" RepeatDirection="Vertical" CssClass="SingleCheckbox"></asp:CheckBoxList>
+                        </asp:Panel>
                     </div>
                 </div>
-
-
                 <div class="form-group">
                     <div class="col-md-offset-7 col-md-4">
                         <asp:Button runat="server" Text="Save" CssClass="btn btn-primary" ID="btnSubmit" OnClick="btnSubmit_Click" Visible="False" />

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OutTracking.aspx.cs" Inherits="PalletManagement.Web.Setup.OutTracking" %>
+﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OutTracking.aspx.cs" Inherits="PalletManagement.Web.Setup.OutTracking" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
@@ -13,24 +13,33 @@
             padding-left: 20px;
         }
     </style>--%>
+      <div class="row">
+            <h4>Out-Going Pallets</h4>
+                <hr />
+      </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-horizontal">
-                <h4>Out-Going Pallets</h4>
-                <hr />
                 <asp:PlaceHolder runat="server" ID="ErrorMessage" Visible="false">
                     <p class="text-danger">
                         <asp:Literal runat="server" ID="FailureText" />
                     </p>
                 </asp:PlaceHolder>
 
-                <div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="chkAvailablePatllets" CssClass="col-md-4 control-label">Select Pallets</asp:Label>
+                <%--<div class="form-group">
+                    <%--<asp:Label runat="server" AssociatedControlID="chkAvailablePatllets" CssClass="col-md-4 control-label">Select Pallets</asp:Label>--%>
                     <div class="col-md-8 ">
-                        <asp:CheckBoxList ID="chkAvailablePatllets" runat="server" BorderStyle="None" RepeatDirection="Vertical" RepeatColumns="3" RepeatLayout="Flow" RenderWhenDataEmpty="True"></asp:CheckBoxList>
+                        <asp:Panel runat="server" ScrollBars="Auto" Height="210px" GroupingText="Select Pallets" Wrap="true"  >
+                           <asp:CheckBoxList ID="chkAvailablePatllets" runat="server" BorderStyle="None" RepeatDirection="Vertical" CssClass="SingleCheckbox"></asp:CheckBoxList>
+                        </asp:Panel>
                     </div>
-                </div>
+                <%--</div>--%>
 
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-horizontal">
 
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="ddlDestinationFacility" CssClass="col-md-4 control-label">Destination</asp:Label>
@@ -72,6 +81,8 @@
         </div>
     </div>
     <div class="row">
+    </div>
+    <div class="row">
         <div class="col-md-10 form-group col-lg-12 bs-component">
             <asp:GridView ID="gdvShipment" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="ShipmentId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal" OnSelectedIndexChanged="gdvShipment_SelectedIndexChanged" OnRowDeleting="gdvShipment_RowDeleting">
                 <Columns>
@@ -81,7 +92,7 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShipmentId" HeaderText="ID" Visible="false" />
-                    <asp:BoundField DataField="ShipmentStatus" HeaderText="Status" />
+                    <%--<asp:BoundField DataField="ShipmentStatus" HeaderText="Status" />--%>
                     <asp:BoundField DataField="Source" HeaderText="Source" />
                     <asp:BoundField DataField="SourceDateTime" HeaderText="Departure Time" DataFormatString="{0:dd-MM-yy}" />
                     <asp:BoundField DataField="Destination" HeaderText="Destination" />
