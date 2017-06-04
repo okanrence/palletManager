@@ -1,6 +1,7 @@
 ﻿using MyAppTools.Helpers;
 using PalletManagement.Core.Domain;
 using PalletManagement.Core.Infrastructure;
+using PalletManagement.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,7 +25,7 @@ namespace PalletManagement.Core.Services
         List<Pallet> ReadPalletsFromExcel(string filePath);
         int Attach(Pallet oPallet);
         IQueryable<Pallet> GetbyShipmentId(int shipmentId);
-        //int SaveChanges();
+        List<PalletSummary> GetPalletSummary(DateTime? startDate = null, DateTime? endDate = null);
 
     }
 
@@ -85,6 +86,13 @@ namespace PalletManagement.Core.Services
         public IQueryable<Pallet> GetList()
         {
             return _palletRepo.All.AsNoTracking();
+        }
+        public List<PalletSummary> GetPalletSummary(DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var query =  this.GetList()
+                     .GroupBy(p => p.CurrentLocation.CustomerId)
+                     .Select(g => new PalletSummary {  CustomerId = g.Key, Total = g.Count() }).ToList();
+           return query;
         }
 
         //public int SaveChanges()

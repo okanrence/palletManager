@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PalletManagement.Web.Setup {
+namespace PalletManagement.Web.Reports {
     
     
-    public partial class PalletSetup {
+    public partial class Summary {
         
         /// <summary>
         /// ErrorMessage control.
@@ -31,84 +31,48 @@ namespace PalletManagement.Web.Setup {
         protected global::System.Web.UI.WebControls.Literal FailureText;
         
         /// <summary>
-        /// lblExcel control.
+        /// txtStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblExcel;
+        protected global::System.Web.UI.WebControls.TextBox txtStartDate;
         
         /// <summary>
-        /// FileUpload1 control.
+        /// txtEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload FileUpload1;
+        protected global::System.Web.UI.WebControls.TextBox txtEndDate;
         
         /// <summary>
-        /// btnExtract control.
+        /// lnkExcel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExtract;
+        protected global::System.Web.UI.WebControls.LinkButton lnkExcel;
         
         /// <summary>
-        /// ddlCustomer control.
+        /// gdvPalletSummary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCustomer;
+        protected global::System.Web.UI.WebControls.GridView gdvPalletSummary;
         
         /// <summary>
-        /// ddlPlant control.
+        /// hdfShipmentId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPlant;
-        
-        /// <summary>
-        /// btnSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
-        
-        /// <summary>
-        /// hdfPalletId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfPalletId;
-        
-        /// <summary>
-        /// gdvPallets control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gdvPallets;
-        
-        /// <summary>
-        /// lblUploadInfo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUploadInfo;
+        protected global::System.Web.UI.WebControls.HiddenField hdfShipmentId;
     }
 }

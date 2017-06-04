@@ -222,6 +222,7 @@
     <Content Include="PalletManagement\Shipments.aspx" />
     <Content Include="PalletManagement\InTracking.aspx" />
     <Content Include="PalletManagement\OutTracking.aspx" />
+    <Content Include="Reports\Summary.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -465,6 +466,13 @@
       <DependentUpon>OutTracking.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\Summary.aspx.cs">
+      <DependentUpon>Summary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Summary.aspx.designer.cs">
+      <DependentUpon>Summary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Setup\PalletsView.aspx.cs">
       <DependentUpon>PalletsView.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

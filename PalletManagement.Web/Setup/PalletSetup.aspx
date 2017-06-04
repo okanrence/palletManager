@@ -11,37 +11,18 @@
                         <asp:Literal runat="server" ID="FailureText" />
                     </p>
                 </asp:PlaceHolder>
+             
+
                 <div class="form-group">
-                    <asp:Label runat="server" AssociatedControlID="rdbSetupType" CssClass="col-md-4 control-label">Setup Options</asp:Label>
+                    <asp:Label runat="server" ID="lblExcel" CssClass="col-md-4 control-label">Select Excel File</asp:Label>
                     <div class="col-md-4">
-                        <asp:RadioButtonList ID="rdbSetupType" runat="server" AutoPostBack="True" CellPadding="0" CellSpacing="2" OnSelectedIndexChanged="rdbSetupType_SelectedIndexChanged">
-                            <asp:ListItem Value="0">Single Entry</asp:ListItem>
-                            <asp:ListItem Value="1" Selected="True">Upload from Excel</asp:ListItem>
-                        </asp:RadioButtonList>
+                        <asp:FileUpload ID="FileUpload1" runat="server" />
+                    </div>
+                    <div class="col-md-4">
+                        <asp:Button ID="btnExtract" runat="server" Text="Extract File" OnClick="btnExtract_Click" CausesValidation="False" />
                     </div>
                 </div>
-                <asp:MultiView ID="MultiView1" runat="server">
-                    <asp:View ID="singleEntry" runat="server">
-                        <div class="form-group">
-                            <asp:Label runat="server" ID="lblStartSerial" AssociatedControlID="txtStartSerial" CssClass="col-md-4 control-label">Serial No</asp:Label>
-                            <div class="col-md-8">
-                                <asp:TextBox runat="server" ID="txtStartSerial" TextMode="SingleLine" CssClass="form-control" />
-                                <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="txtStartSerial" CssClass="text-danger" ErrorMessage="required." />--%>
-                            </div>
-                        </div>
-                    </asp:View>
-                    <asp:View ID="multipleEntry" runat="server">
-                        <div class="form-group">
-                            <asp:Label runat="server" ID="lblExcel" AssociatedControlID="txtStartSerial" CssClass="col-md-4 control-label">Select Excel File</asp:Label>
-                            <div class="col-md-4">
-                                <asp:FileUpload ID="FileUpload1" runat="server" />
-                            </div>
-                            <div class="col-md-4">
-                                <asp:Button ID="btnExtract" runat="server" Text="Extract File" OnClick="btnExtract_Click" CausesValidation="False" />
-                            </div>
-                        </div>
-                    </asp:View>
-                </asp:MultiView>
+
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="ddlCustomer" CssClass="col-md-4 control-label">Customer</asp:Label>
                     <div class="col-md-8">
@@ -71,11 +52,11 @@
                 </div>
             </div>
         </div>
-         <div class="col-md-2"></div>
+        <div class="col-md-2"></div>
         <div class="col-md-4">
             <div class="form-horizontal">
-              <%--   <h4>Add Pallets</h4>--%>
-                <div class="form-group" style="padding-top:60px">
+                <%--   <h4>Add Pallets</h4>--%>
+                <div class="form-group" style="padding-top: 60px">
                     <asp:GridView ID="gdvPallets" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="PalletId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal">
                         <Columns>
                             <asp:BoundField DataField="PalletId" HeaderText="No" />
@@ -83,11 +64,11 @@
                         </Columns>
                         <HeaderStyle BackColor="#1A4874" ForeColor="White" />
                     </asp:GridView>
-                    <asp:Label ID="lblUploadInfo" runat="server" Text="" ForeColor ="Blue"></asp:Label>
+                    <asp:Label ID="lblUploadInfo" runat="server" Text="" ForeColor="Blue"></asp:Label>
                 </div>
             </div>
         </div>
-             
+
     </div>
 
 
