@@ -72,7 +72,7 @@ namespace PalletManagement.Web
             if (Session["UserName"] != null)
                 ltUserName.Text = Session["UserName"].ToString();
             else
-                Response.Redirect("Default");
+                Response.Redirect("~/Default");
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

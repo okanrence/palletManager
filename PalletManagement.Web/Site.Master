@@ -23,6 +23,7 @@
                 <%--Framework Scripts--%>
                 <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="jquery.ui.combined" />
                 <asp:ScriptReference Name="bootstrap" />
                 <asp:ScriptReference Name="respond" />
                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
@@ -37,7 +38,7 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-
+        
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -51,7 +52,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <%-- <li><a runat="server" href="~/default">Dashboard</a></li>--%>
-                     <%--   <li class="dropdown">
+                        <%--   <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Setup <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/Setup/UsersSetup">Users</a></li>
@@ -65,7 +66,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/PalletManagement/InTracking">Check-In</a></li>
                                 <li><a href="/PalletManagement/OutTracking">Check-Out</a></li>
-                                  <li role="separator" class="divider"></li>
+                                <li role="separator" class="divider"></li>
                                 <li><a href="/PalletManagement/Shipments">View Shipments</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="#">Damaged Pallets</a></li>
@@ -74,7 +75,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                               <%-- <li><a href="#">View Profile</a></li>--%>
+                                <%-- <li><a href="#">View Profile</a></li>--%>
                                 <li><a href="ChangePassword.aspx">Change Password</a></li>
                             </ul>
                         </li>
@@ -82,7 +83,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello,
                             <asp:Literal runat="server" ID="ltUserName"></asp:Literal>!</a></li>
-                        <li><asp:LinkButton ID="LogOutLink" runat="server" OnClick="LogOut" CausesValidation="False">Log Out</asp:LinkButton></li>
+                        <li>
+                            <asp:LinkButton ID="LogOutLink" runat="server" OnClick="LogOut" CausesValidation="False">Log Out</asp:LinkButton></li>
                     </ul>
 
                 </div>
@@ -97,5 +99,6 @@
             </footer>
         </div>
     </form>
+          <%: Scripts.Render("~/bundles/custom") %>
 </body>
 </html>

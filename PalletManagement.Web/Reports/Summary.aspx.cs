@@ -109,7 +109,7 @@ namespace PalletManagement.Web.Reports
             Response.ClearContent();
             Response.ClearHeaders();
             Response.Charset = "";
-            string FileName = "Vithal" + DateTime.Now + ".xls";
+            string FileName = "Summary_Report_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xls";
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
             Response.Cache.SetCacheability(HttpCacheability.NoCache);

@@ -91,7 +91,7 @@ namespace PalletManagement.Core.Services
         {
             var query =  this.GetList()
                      .GroupBy(p => p.CurrentLocation.CustomerId)
-                     .Select(g => new PalletSummary {  CustomerId = g.Key, Total = g.Count() }).ToList();
+                     .Select(g => new PalletSummary {  CustomerId = g.Key, Total = g.Count(), Available = g.Count() }).ToList();
            return query;
         }
 

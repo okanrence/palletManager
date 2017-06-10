@@ -1,4 +1,5 @@
-﻿using PalletManagement.Core.Domain;
+﻿using Byaxiom.Logger;
+using PalletManagement.Core.Domain;
 using PalletManagement.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace PalletManagement.Web
             if (IsValid)
             {
                 Session.Remove("CurrentUser");
-
+                LogHelper.Info("Here");
                 var userName = Email.Text;
                 var password = Password.Text;
 
@@ -58,7 +59,7 @@ namespace PalletManagement.Web
                         currentUser.LastLoginDate = DateTime.Now;
                         if (currentUser.UserRole.UserRoleName != USER_ROLES.ADMIN)
                             _userServices.Update(currentUser);
-                        Response.Redirect("/Landing");
+                        Response.Redirect("~/Landing");
                     }
 
                 }
@@ -75,12 +76,12 @@ namespace PalletManagement.Web
         }
         private User AuthenticateUser(string emailaddress, string password)
         {
-            if (emailaddress == "admin@pil.com")
+            if (emailaddress == "admin@pil.com" && password == "admin")
             {
                 return new User
                 {
-                    FirstName = "Olanrewaju",
-                    LastName = "Okanrende",
+                    FirstName = "Administrator",
+                    LastName = "Administrator",
                     DateAdded = DateTime.Now,
                     UserRole = new UserRole { UserRoleName = "Admin" },
                     EmailAddress = emailaddress,

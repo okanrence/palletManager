@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FacilitySetup.aspx.cs" Inherits="PalletManagement.Web.Setup.FacilitySetup" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteAdmin.Master" AutoEventWireup="true" CodeBehind="FacilitySetup.aspx.cs" Inherits="PalletManagement.Web.Setup.FacilitySetup" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <div class="col-lg-12">
                         <div class="bs-component">
-                            <asp:GridView ID="gdvFacilities" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="FacilityId" EmptyDataText="No Records Found For This Customer." OnSelectedIndexChanged="gdvCustomers_SelectedIndexChanged" OnRowDeleting="gdvCustomers_RowDeleting" GridLines="Horizontal">
+                            <asp:GridView ID="gdvFacilities" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="FacilityId" EmptyDataText="No Facilities Found For This Customer." OnSelectedIndexChanged="gdvCustomers_SelectedIndexChanged" OnRowDeleting="gdvCustomers_RowDeleting" GridLines="Horizontal">
                                 <Columns>
                                     <asp:BoundField DataField="FacilityId" HeaderText="ID" />
                                     <asp:BoundField DataField="FacilityName" HeaderText="Facility Name" />
@@ -52,9 +52,11 @@
             </div>
         </div>
     </div>
-    <hr />
+
     <div class="row">
         <div class="col-md-6">
+            <h5>Enter Facility Details</h5>
+            <hr />
             <div class="form-horizontal">
                 <div class="form-group">
                     <asp:Label runat="server" AssociatedControlID="ddlFacilityType" CssClass="col-md-4 control-label">Facility Type</asp:Label>

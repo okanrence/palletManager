@@ -133,7 +133,7 @@ namespace PalletManagement.Web.Setup
             catch (Exception ex)
             {
                 LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
+                displayMessage(ex.StackTrace + ex.Message+ ex.InnerException, false);
             }
         }
 
