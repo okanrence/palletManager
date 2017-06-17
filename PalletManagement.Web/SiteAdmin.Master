@@ -10,9 +10,11 @@
 
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
+      
     </asp:PlaceHolder>
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+     <%--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">--%>
 
 </head>
 <body>
@@ -23,6 +25,7 @@
                 <%--Framework Scripts--%>
                 <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="jquery.ui.combined" />
                 <asp:ScriptReference Name="bootstrap" />
                 <asp:ScriptReference Name="respond" />
                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
@@ -72,18 +75,18 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/Setup/PalletsView">Pallet List</a></li>
+                                <li><a href="/Reports/Summary">Pallet Summary</a></li>
                                 <li><a href="#">Pallet Movement</a></li>
-                                <li><a href="#">Totally Damaged Pallets</a></li>
+                                <%--  <li><a href="#">Totally Damaged Pallets</a></li>
                                 <li><a href="#">Repaired Pallets</a></li>
                                 <li><a href="#">Outstanding Repairable Pallets</a></li>
-                                <li><a href="#">Dormant Pallets</a></li>
+                                <li><a href="#">Dormant Pallets</a></li>--%>
                             </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">View Profile</a></li>
+                                <%--<li><a href="#">View Profile</a></li>--%>
                                 <li><a href="ChangePassword.aspx">Change Password</a></li>
                             </ul>
                         </li>
@@ -91,7 +94,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li><a runat="server" href="~/Account/Manage" title="Manage your account">Hello,
-                            <asp:Literal runat="server" ID="ltUserName"></asp:Literal>!</a></li>
+                            <asp:Literal runat="server" ID="ltUserName"></asp:Literal></a></li>
                         <li>
                             <asp:LinkButton ID="LogOutLink" runat="server" OnClick="LogOut" CausesValidation="False">Log Out</asp:LinkButton></li>
                     </ul>
@@ -104,9 +107,10 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>PIL &copy; <%: DateTime.Now.Year %> </p>
+                <p>PIL &copy; 2017 </p>
             </footer>
         </div>
     </form>
+      <%: Scripts.Render("~/bundles/custom") %>
 </body>
 </html>

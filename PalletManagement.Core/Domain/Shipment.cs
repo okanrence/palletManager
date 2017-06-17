@@ -20,6 +20,9 @@ namespace PalletManagement.Core.Domain
         public int ShipmentId { get; set; }
         public string ShipmentNumber { get; set; }
 
+        public int CustomerId { get; set; }
+        public virtual Customer Customer { get; set; }
+
         public int ShipmentStatusId { get; set; }
         [ForeignKey("ShipmentStatusId")]
         public virtual ShipmentStatus ShipmentStatus { get; set; }
@@ -45,7 +48,8 @@ namespace PalletManagement.Core.Domain
 
         public string TruckNumber { get; set; }
         public string PalletList { get; set; }
-        public int NoOfPallets { get; set; }
+        public int NoOfPalletsOut { get; set; }
+        public int NoOfPalletsIn { get; set; }
         public bool IsCompleted { get; set; }
         //public bool IsCompleted { get { return this.ShipmentStatusId == (int)Services.SHIPMENT_STATUS.Incoming; } set() }
       //  public virtual ICollection<Pallet> Pallets { get; set; }

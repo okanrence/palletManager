@@ -15,12 +15,12 @@ namespace PalletManagement.Core.Services
         public const string DEACTIVATED = "D";
 
     }
-    public class USER_ROLES
+    public enum USER_ROLES
     {
-        public const string ADMIN = "Admin";
-        public const string TRACKER = "Tracker";
-        public const string ENGINEER = "Engineer";
-       
+        Admin = 1,
+        Operator,
+        ReportView
+
     }
     public class FACILITY_TYPES
     {
@@ -31,9 +31,15 @@ namespace PalletManagement.Core.Services
     public enum PALLET_STATUS
     {
         Available = 1,
-        Repairable,
-        Total_Damage,
+        Damaged,
         Unaccounted
+    }
+
+    public enum DAMAGE_LEVEL
+    {
+        Repairable = 1,
+        Total_Damage
+
     }
     public enum SHIPMENT_STATUS
     {

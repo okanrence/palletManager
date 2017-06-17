@@ -85,40 +85,21 @@ namespace PalletManagement.Web.Setup
                         ShipmentStatusId = (int)SHIPMENT_STATUS.Checked_Out,
                         SourceDateTime = DateTime.Now,
                         PalletList = SerializationServices.SerializeJson(selectedPallets),
-                        NoOfPallets = selectedPallets.Count,
-                        IsCompleted = false
+                        NoOfPalletsOut = selectedPallets.Count,
+                        IsCompleted = false,
+                        NoOfPalletsIn = 0,
+                        CustomerId = CurrentUser.AssignedFacility.CustomerId
                     };
                     _shipmentService.Add(oShipment);
 
                     var palletsToAdd = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList();
 
-                    //foreach (var pallet in palletsToAdd)
-                    //{
-                    //    _palletService.Attach(pallet);
-                    //    oShipment.Pallets.Add(pallet);
-
-                    //}
-
-                    //    _shipmentService.SaveChanges();
-
-                    //  _shipmentService.Update(oShipment);
                     var updatedPallets = palletsToAdd.Select(c =>
                     {
                         c.LastMovementDate = DateTime.Now;
                         c.CurrentShipmentId = oShipment.ShipmentId;
                         return c;
                     }).ToList();
-
-                    //var modifiedPallets = new List<Pallet>();
-                    ////var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode));
-                    //foreach (var pallet in palletsToAdd)
-                    //{
-
-                    //    pallet.LastMovementDate = DateTime.Now;
-                    //    pallet.CurrentShipmentId = oShipment.ShipmentId;
-                    //    //_palletService.Attach(pallet);
-                    //    // modifiedPallets.Add(pallet);
-                    //};
                     _palletService.Update(updatedPallets);
                     _shipmentService.SaveChanges();
                     tran.Complete();
@@ -133,7 +114,7 @@ namespace PalletManagement.Web.Setup
             catch (Exception ex)
             {
                 LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
+                displayMessage(ex.StackTrace + ex.Message + ex.InnerException, false);
             }
         }
 
@@ -173,7 +154,7 @@ namespace PalletManagement.Web.Setup
                     oShipment.TruckNumber = txtTruckNumber.Text;
                     oShipment.SourceDateTime = DateTime.Now;
                     oShipment.PalletList = SerializationServices.SerializeJson(checkedPallets);
-                    oShipment.NoOfPallets = checkedPallets.Count;
+                    oShipment.NoOfPalletsOut = checkedPallets.Count;
 
                     var facilityPallets = _palletService.GetList().Where(x => x.FacilityId == CurrentUser.AssignedFacilityId).ToList();
 
@@ -192,21 +173,7 @@ namespace PalletManagement.Web.Setup
                         return c;
                     }).ToList();
 
-                    //var palletsForUpdate = new List<Pallet>();
-                    //foreach (var pallet in facilityPallets)
-                    //{
-                    //    if (checkedPallets.Contains(pallet.PalletCode))
-                    //    {
-                    //        pallet.LastMovementDate = DateTime.Now;
-                    //        pallet.CurrentShipmentId = oShipment.ShipmentId;
-                    //    }
-                    //    else
-                    //    {
-                    //        pallet.LastMovementDate = null;
-                    //        pallet.CurrentShipmentId = null;
-                    //    }
-                    //    palletsForUpdate.Add(pallet);
-                    //}
+
                     _shipmentService.Update(oShipment);
                     _palletService.Update(updatedPallets);
 

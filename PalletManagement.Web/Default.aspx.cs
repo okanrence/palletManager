@@ -1,4 +1,5 @@
-﻿using PalletManagement.Core.Domain;
+﻿using Byaxiom.Logger;
+using PalletManagement.Core.Domain;
 using PalletManagement.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace PalletManagement.Web
             if (IsValid)
             {
                 Session.Remove("CurrentUser");
-
+                LogHelper.Info("Here");
                 var userName = Email.Text;
                 var password = Password.Text;
 
@@ -51,14 +52,15 @@ namespace PalletManagement.Web
                     }
                     else
                     {
-                        Session.Add("CurrentUser", currentUser);
-                        Session.Add("UserName", currentUser.FirstName);
-                        var d = Request.UserAgent;
-                        var r = Request.UserHostAddress + Request.UserHostName;
+                        Session.Add("CurrentUser", currentUser );
+                        var facility = currentUser.UserRoleId == (int)USER_ROLES.Admin ? "Administrator" : currentUser.AssignedFacility?.FacilityName;
+                        Session.Add("UserDetails", $"{currentUser.FirstName} | {facility}");
+                        //var d = Request.UserAgent;
+                        //var r = Request.UserHostAddress + Request.UserHostName;
                         currentUser.LastLoginDate = DateTime.Now;
-                        if (currentUser.UserRole.UserRoleName != USER_ROLES.ADMIN)
-                            _userServices.Update(currentUser);
-                        Response.Redirect("/Landing");
+                        //if (currentUser.UserRoleId != (int)USER_ROLES.Admin)
+                        //    _userServices.Update(currentUser);
+                        Response.Redirect("~/Landing");
                     }
 
                 }
@@ -75,20 +77,20 @@ namespace PalletManagement.Web
         }
         private User AuthenticateUser(string emailaddress, string password)
         {
-            if (emailaddress == "admin@pil.com")
-            {
-                return new User
-                {
-                    FirstName = "Olanrewaju",
-                    LastName = "Okanrende",
-                    DateAdded = DateTime.Now,
-                    UserRole = new UserRole { UserRoleName = "Admin" },
-                    EmailAddress = emailaddress,
-                    StaffNumber = "1234",
-                    ProfileStatus = "A",
-                    PhoneNumber = "08029039468"
-                };
-            }
+            //if (emailaddress == "admin@pil.com" && password == "admin")
+            //{
+            //    return new User
+            //    {
+            //        FirstName = "Administrator",
+            //        LastName = "Administrator",
+            //        DateAdded = DateTime.Now,
+            //        UserRole = new UserRole { UserRoleName = "Admin" },
+            //        EmailAddress = emailaddress,
+            //        StaffNumber = "1234",
+            //        ProfileStatus = "A",
+            //        PhoneNumber = "08029039468"
+            //    };
+            //}
 
             return _userServices.Authenticate(emailaddress, password);
 

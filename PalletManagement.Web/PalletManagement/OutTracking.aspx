@@ -1,4 +1,4 @@
-﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OutTracking.aspx.cs" Inherits="PalletManagement.Web.Setup.OutTracking" %>
+﻿ <%@ Page Title="" Language="C#" MasterPageFile="~/SiteOperator.Master" AutoEventWireup="true" CodeBehind="OutTracking.aspx.cs" Inherits="PalletManagement.Web.Setup.OutTracking" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
@@ -92,13 +92,13 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShipmentId" HeaderText="ID" Visible="false" />
-                    <%--<asp:BoundField DataField="ShipmentStatus" HeaderText="Status" />--%>
                     <asp:BoundField DataField="Source" HeaderText="Source" />
                     <asp:BoundField DataField="SourceDateTime" HeaderText="Departure Time" DataFormatString="{0:dd-MM-yy}" />
                     <asp:BoundField DataField="Destination" HeaderText="Destination" />
                     <asp:BoundField DataField="DestinationDateTime" HeaderText="Arrival Time" DataFormatString="{0:dd-MM-yy}" />
                     <asp:BoundField DataField="TruckNumber" HeaderText="Truck Number" />
-                    <asp:BoundField DataField="NoOfPallets" HeaderText="Pallets" />
+                    <asp:BoundField DataField="NoOfPalletsOut" HeaderText="Pallets Out" />
+                  
 
                     <asp:TemplateField HeaderText="Checked In">
                         <ItemTemplate>

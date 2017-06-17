@@ -1,4 +1,5 @@
 ﻿using PalletManagement.Core.Domain;
+using PalletManagement.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,14 @@ namespace PalletManagement.Web
 
             if (CurrentUser != null)
             {
-                if (CurrentUser.UserRole.UserRoleName == "Admin")
+                if (CurrentUser.UserRoleId ==  (int)USER_ROLES.Admin)
                     this.MasterPageFile = "~/SiteAdmin.master";
-                
+                else if (CurrentUser.UserRoleId == (int)USER_ROLES.Operator)
+                    this.MasterPageFile = "~/SiteOperator.master";
+                else if (CurrentUser.UserRoleId == (int)USER_ROLES.ReportView)
+                    this.MasterPageFile = "~/SiteReports.master";
+                else
+                    this.MasterPageFile = "~/SiteOuter.master";
             }
         }
 

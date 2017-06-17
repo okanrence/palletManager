@@ -289,29 +289,5 @@ namespace PalletManagement.Web.Setup
         {
             LoadFacilities(int.Parse(ddlCustomer.SelectedValue));
         }
-
-        //protected void gdvUsers_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        //{
-        //    NavigateToFacility(e);
-        //}
-
-        //private void NavigateToFacility(GridViewUpdateEventArgs e)
-        //{
-        //    try
-        //    {
-        //        var UserID = int.Parse(e.Keys["UserId"].ToString());
-        //        Response.Redirect($"FacilitySetup?query={UserID}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogHelper.Log(ex);
-        //        //displayMessage(ex.Message, false);
-
-        //    }
-        //}
-
-
-
-
     }
 }

@@ -69,10 +69,10 @@ namespace PalletManagement.Web
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UserName"] != null)
-                ltUserName.Text = Session["UserName"].ToString();
+            if (Session["UserDetails"] != null)
+                ltUserName.Text = Session["UserDetails"].ToString();
             else
-                Response.Redirect("/default");
+                Response.Redirect("~/default");
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)
@@ -83,7 +83,7 @@ namespace PalletManagement.Web
         public void LogOut(object sender, EventArgs e)
         {
             Session.Remove("CurrentUser");
-            Session.Remove("UserName");
+            Session.Remove("UserDetails");
             Response.Redirect("/Default");
         }
     }

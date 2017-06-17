@@ -1,6 +1,7 @@
 ﻿using MyAppTools.Helpers;
 using PalletManagement.Core.Domain;
 using PalletManagement.Core.Infrastructure;
+using PalletManagement.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,6 +17,7 @@ namespace PalletManagement.Core.Services
         int Add(Pallet oPallet);
         int Add(List<Pallet> oPallets);
         int Update(Pallet oPallet);
+        int RepairPallet(Pallet oPallet);
         int Update(List<Pallet> oPallets);
         Pallet GetbyCode(string palletCode);
         Pallet GetbyId(int palletId);
@@ -24,7 +26,7 @@ namespace PalletManagement.Core.Services
         List<Pallet> ReadPalletsFromExcel(string filePath);
         int Attach(Pallet oPallet);
         IQueryable<Pallet> GetbyShipmentId(int shipmentId);
-        //int SaveChanges();
+        List<PalletSummary> GetPalletSummary(int? customerId = null);
 
     }
 
@@ -68,6 +70,14 @@ namespace PalletManagement.Core.Services
             return unitOfWork.SaveChanges();
         }
 
+        public int RepairPallet(Pallet oPallet)
+        {
+            var originalPallet = _palletRepo.Find(oPallet.PalletId);
+            originalPallet.StatusId = oPallet.StatusId;
+            originalPallet.LastUpdatedDate = DateTime.Now;
+            _palletRepo.Edit(originalPallet);
+            return unitOfWork.SaveChanges();
+        }
         public Pallet GetbyCode(string palletCode)
         {
             return _palletRepo.All.FirstOrDefault(x => x.PalletCode == palletCode);
@@ -84,7 +94,42 @@ namespace PalletManagement.Core.Services
 
         public IQueryable<Pallet> GetList()
         {
-            return _palletRepo.All.AsNoTracking();
+            return _palletRepo.All.AsNoTracking()
+                .Include(x => x.CurrentLocation);
+        }
+        public List<PalletSummary> GetPalletSummary(int? customerId = null)
+        {
+            List<PalletSummary> result = null;
+            var all = this.GetList();
+            if (customerId != null)
+            {
+                result = all.Where(x=>x.CurrentLocation.CustomerId == customerId)
+                    .GroupBy(p => p.CurrentLocation.FacilityId)
+                      .Select(g => new PalletSummary
+                      {
+                          FacilityId = g.Key,
+                          Total = g.Count(),
+                          Available = g.Count() - g.Where(x => x.StatusId != (int)PALLET_STATUS.Available).Count(),
+                          Damaged = g.Where(x => x.StatusId == (int)PALLET_STATUS.Damaged).Count(),
+                          Unaccounted = g.Where(x => x.StatusId == (int)PALLET_STATUS.Unaccounted).Count(), oCustomer = g.FirstOrDefault(x=>x.CurrentLocation.CustomerId == customerId).CurrentLocation.Customer
+                      }).ToList();
+            }
+            else
+            {
+                result = all.GroupBy(p => p.CurrentLocation.CustomerId)
+                     .Select(g => new PalletSummary
+                     {
+                         CustomerId = g.Key,
+                         Total = g.Count(),
+                         Available = g.Count() - g.Where(x => x.StatusId != (int)PALLET_STATUS.Available).Count(),
+                         Damaged = g.Where(x => x.StatusId == (int)PALLET_STATUS.Damaged).Count(),
+                         Unaccounted = g.Where(x => x.StatusId == (int)PALLET_STATUS.Unaccounted).Count(),
+                         oFacility = g.FirstOrDefault(x => x.CurrentLocation.CustomerId == customerId).CurrentLocation
+                     }).ToList();
+            }
+
+
+            return result;
         }
 
         //public int SaveChanges()

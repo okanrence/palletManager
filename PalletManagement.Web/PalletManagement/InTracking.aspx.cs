@@ -56,27 +56,38 @@ namespace PalletManagement.Web.Setup
                 using (var tran = new TransactionScope())
                 {
                     var selectedPallets = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected).Select(x => x.Text).ToList();
+                    var allPallets = chkAvailablePatllets.Items.Cast<ListItem>().Select(x => x.Text).ToList();
                     var shipmentIsComplete = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected == false).Select(x => x.Text).ToList().Count <= 0;
 
                     var oShipment = _shipmentService.GetbyId(shipmentId);
-
+                   
                     oShipment.IsCompleted = shipmentIsComplete;
                     oShipment.DestinationDateTime = DateTime.Now;
                     oShipment.InTrackerId = CurrentUser.UserId;
 
 
-                    var oPallets = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList();
+                    var oPallets = _palletService.GetList().Where(x => allPallets.Contains(x.PalletCode)).ToList();
                     var updatedPallets = oPallets.Select(c =>
                     {
                         if (selectedPallets.Contains(c.PalletCode))
+                        {
+                            c.FacilityId = oShipment.ShipmentDestinationId;
                             c.CurrentShipmentId = null;
+                            c.StatusId = (int)PALLET_STATUS.Available;
+                        }
                         else
+                        {
                             c.StatusId = (int)PALLET_STATUS.Unaccounted;
-                        c.FacilityId = oShipment.ShipmentDestinationId;
+                            c.FacilityId = oShipment.ShipmentSourceId;
+
+                        }
+
+
                         return c;
                     }).ToList();
 
                     _palletService.Update(updatedPallets);
+                    oShipment.NoOfPalletsIn += selectedPallets.Count();
                     _shipmentService.Update(oShipment);
                     tran.Complete();
                 }

@@ -28,59 +28,17 @@ namespace PalletManagement.Web.Setup
             if (IsPostBack) return;
 
             LoadCustomers();
-            MultiView1.SetActiveView(multipleEntry);
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             ErrorMessage.Visible = false;
             lblUploadInfo.Text = "";
-            if (isSingleMode())
-                AddSinglePallet();
-            else
-                AddMultiplePallets();
-
-            // LoadPallets();
+            AddMultiplePallets();
         }
 
-        private bool isSingleMode()
-        {
-            if (rdbSetupType.SelectedIndex == 0)
-                return true;
-            return false;
-        }
+    
 
-        private void AddSinglePallet()
-        {
-            try
-            {
-                if (alreadyExists(txtStartSerial.Text))
-                {
-                    displayMessage("Pallet already exists", false);
-                    return;
-                }
-
-                var oPallet = new Pallet()
-                {
-                    FacilityId = int.Parse(ddlPlant.SelectedValue),
-                    DateAdded = DateTime.Now,
-                    PalletCode = txtStartSerial.Text,
-                    StatusId = (int)PALLET_STATUS.Available
-                };
-
-                _palletService.Add(oPallet);
-                ResetForm();
-                displayMessage("Pallet Added Successfully", true);
-
-
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Log(ex);
-                displayMessage(ex.Message, false);
-
-            }
-        }
         private void AddMultiplePallets()
         {
             try
@@ -232,7 +190,6 @@ namespace PalletManagement.Web.Setup
 
         private void ResetForm()
         {
-            txtStartSerial.Text = string.Empty;
             ddlCustomer.SelectedIndex = 0;
             hdfPalletId.Value = string.Empty;
             //btnSubmit.Text = "Submit";
@@ -286,14 +243,6 @@ namespace PalletManagement.Web.Setup
         protected void ddlCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadFacilities(int.Parse(ddlCustomer.SelectedValue));
-        }
-
-        protected void rdbSetupType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            MultiView1.SetActiveView(isSingleMode() ? singleEntry : multipleEntry);
-            txtStartSerial.Text = string.Empty;
-            ddlCustomer.SelectedIndex = 0;
-            ddlPlant.SelectedIndex = 0;
         }
 
         protected void btnExtract_Click(object sender, EventArgs e)

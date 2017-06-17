@@ -3,6 +3,7 @@ using PalletManagement.Core.Domain;
 using PalletManagement.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace PalletManagement.Core.Services
@@ -14,7 +15,7 @@ namespace PalletManagement.Core.Services
         int Update(Facility oFacility);
         int Delete(int FacilityId);
         Facility GetbyId(int FacilityId);
-        IEnumerable<Facility> GetList();
+        IQueryable<Facility> GetList();
     }
 
     public class FacilityServices : BaseService, IFacilityServices
@@ -48,9 +49,10 @@ namespace PalletManagement.Core.Services
 
         }
 
-        public IEnumerable<Facility> GetList()
+        public IQueryable<Facility> GetList()
         {
-            return _facilityRepo.All;
+            return _facilityRepo.All.AsNoTracking()
+                .Include(x =>x.Customer);
         }
 
         public int Delete(int FacilityId)

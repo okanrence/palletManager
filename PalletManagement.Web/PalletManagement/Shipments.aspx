@@ -1,9 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Shipments.aspx.cs" Inherits="PalletManagement.Web.Setup.Shipments" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteOperator.Master" AutoEventWireup="true" CodeBehind="Shipments.aspx.cs" Inherits="PalletManagement.Web.Setup.Shipments" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
         rel="stylesheet" type="text/css" />
-     <div class="row">
+    <div class="row">
         <div class="form-group">
             <div class="col-md-8">
                 <div class="form-horizontal">
@@ -17,13 +17,18 @@
                     <div class="form-group">
                         <div class="col-md-8 ">
                             <asp:Label runat="server" AssociatedControlID="txtStartDate" CssClass="col-md-4 control-label">Start Date</asp:Label>
-                            <asp:TextBox runat="server" ID="txtStartDate" TextMode="SingleLine" CssClass="form-control" />
+                            <asp:TextBox runat="server" ID="txtStartDate" TextMode="SingleLine" CssClass="form-control datepicker" />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-8 ">
                             <asp:Label runat="server" AssociatedControlID="txtEndDate" CssClass="col-md-4 control-label">End Date</asp:Label>
-                            <asp:TextBox runat="server" ID="txtEndDate" TextMode="SingleLine" CssClass="form-control" />
+                            <asp:TextBox runat="server" ID="txtEndDate" TextMode="SingleLine" CssClass="form-control datepicker" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-7 col-md-4">
+                            <asp:Button runat="server" Text="Load" CssClass="btn btn-primary" ID="btnSubmit" />
                         </div>
                     </div>
 
@@ -38,19 +43,16 @@
                 <Columns>
                     <asp:TemplateField HeaderText="Shipment Number">
                         <ItemTemplate>
-                            <%--<a id="lnkAddClients" href="#" class="btn btn-link " data-toggle="modal" data-target="#myModal" >Add Contacts</a>--%>
                             <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False" data-toggle="modal" data-target="#myModal" Text='<%# Eval("ShipmentNumber") %>'></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="ShipmentId" HeaderText="ID" Visible="false" />
-                    <%--<asp:BoundField DataField="ShipmentNumber" HeaderText="SHipment Number" />--%>
-                    <%--<asp:BoundField DataField="ShipmentStatus" HeaderText="Status" />--%>
                     <asp:BoundField DataField="Source" HeaderText="Source" />
                     <asp:BoundField DataField="SourceDateTime" HeaderText="Check Out Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
                     <asp:BoundField DataField="Destination" HeaderText="Destination" />
                     <asp:BoundField DataField="DestinationDateTime" HeaderText="Check In Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
                     <asp:BoundField DataField="TruckNumber" HeaderText="Truck Number" />
-                    <asp:BoundField DataField="NoOfPallets" HeaderText="Pallets" />
+                    <asp:BoundField DataField="NoOfPalletsOut" HeaderText="Pallets Out" />
 
                     <asp:TemplateField HeaderText="Checked In">
                         <ItemTemplate>

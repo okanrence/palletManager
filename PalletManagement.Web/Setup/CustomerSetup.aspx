@@ -68,11 +68,11 @@
                     <asp:BoundField DataField="PhoneNumber" HeaderText="PhoneNumber" />
                     <asp:TemplateField>
                         <ItemTemplate>
-                            <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False">edit</asp:LinkButton>
+                            <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False">[edit]</asp:LinkButton>
                             &nbsp;|
-                                                <asp:LinkButton ID="lnkDelete" runat="server" CommandName="delete" CausesValidation="False">delete</asp:LinkButton>
+                                                <asp:LinkButton ID="lnkDelete" runat="server" CommandName="delete" CausesValidation="False">[delete]</asp:LinkButton>
                             &nbsp;|
-                                            <asp:LinkButton ID="lnkFacilities" runat="server" CommandName="update" CausesValidation="False">facilities</asp:LinkButton>
+                                            <asp:LinkButton ID="lnkFacilities" runat="server" CommandName="update" CausesValidation="False">[facilities]</asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
