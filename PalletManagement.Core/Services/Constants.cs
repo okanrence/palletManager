@@ -32,7 +32,8 @@ namespace PalletManagement.Core.Services
     {
         Available = 1,
         Damaged,
-        Unaccounted
+        Unaccounted,
+        Dormant
     }
 
     public enum DAMAGE_LEVEL

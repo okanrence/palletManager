@@ -23,6 +23,7 @@ namespace PalletManagement.Core.Services
         string GetShipmentNumber(string source);
         List<ShipmentSummary> GetPalletSummary(DateTime? startDate = null, DateTime? endDate = null, int? customerID = null, int? SourcefacilityId = null, bool groupbyFacility = false);
         object GetDisplayList(List<ShipmentSummary> oShipments);
+        object GetDisplayList(List<ShipmentPallet> oShipments, string shipmentNumber);
         int SaveChanges();
     }
 
@@ -115,7 +116,9 @@ namespace PalletManagement.Core.Services
                 TruckNumber = i.TruckNumber,
                 i.NoOfPalletsOut,
                 i.IsCompleted,
-                i.NoOfPalletsIn
+                i.NoOfPalletsIn,
+                NoOfPalletsOutIn = $"{i.NoOfPalletsOut}({i.NoOfPalletsIn})",
+                Unaccounted = i.NoOfPalletsOut - i.NoOfPalletsIn
             });
         }
         public string GetShipmentNumber(string source)
@@ -181,6 +184,20 @@ namespace PalletManagement.Core.Services
                 i.TotalPalletsTrackedIn,
                 i.TotalPalletsTrackedOut,
                 i.TotalShipments,
+            });
+        }
+
+        public object GetDisplayList(List<ShipmentPallet> oShipments, string shipmentNumber)
+        {
+            int serialNumber = 1;
+
+            return oShipments.Select(i => new
+            {
+                Id = serialNumber,
+                shipmentNumber = shipmentNumber,
+                i.PalletCode,
+                CheckedIn = i.CheckedIn?"Yes":"No",
+                i.DateCheckedIn
             });
         }
 

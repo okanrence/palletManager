@@ -53,6 +53,7 @@ namespace PalletManagement.Web.Reports
             {
                 CurrentUser = Session["CurrentUser"] as User;
                 LoadCustomers();
+                muiltview1.SetActiveView(vwShipments);
                 // pnlByFacility.Visible = false;
             }
         }
@@ -99,7 +100,6 @@ namespace PalletManagement.Web.Reports
                 else
                 {
                     ddlFacilities.Items.Clear();
-                    // ddlFacilities.DataBind();
                 }
             }
             catch (Exception ex)
@@ -177,27 +177,27 @@ namespace PalletManagement.Web.Reports
         protected void gdvDamages_SelectedIndexChanged(object sender, EventArgs e)
         {
             var facilityId = int.Parse(gdvDamages.SelectedDataKey["FacilityId"].ToString());
-            LoadDamagesByFacility(facilityId);
+            LoadShipmentsByFacility(facilityId);
         }
 
-        private void LoadDamagesByFacility(int facilityId)
+        private void LoadShipmentsByFacility(int facilityId)
         {
             try
             {
                 pnlBreakDown.Visible = true;
-                var damages = _shipmentServices.GetList().Where(x => x.ShipmentSourceId == facilityId);
+                var shipments = _shipmentServices.GetList().Where(x => x.ShipmentSourceId == facilityId);
 
                 if (!string.IsNullOrEmpty(txtStartDate.Text))
                 {
                     var startDate = DateTime.Parse(txtStartDate.Text);
-                    damages = damages.Where(x => x.DateAdded >= startDate);
+                    shipments = shipments.Where(x => x.DateAdded >= startDate);
                 }
                 if (!string.IsNullOrEmpty(txtStartDate.Text))
                 {
                     var endDate = DateTime.Parse(txtEndDate.Text).AddDays(1);
-                    damages = damages.Where(x => x.DateAdded <= endDate);
+                    shipments = shipments.Where(x => x.DateAdded <= endDate);
                 }
-                gdvRepairsBreakdown.DataSource = _shipmentServices.GetDisplayList(damages.ToList());
+                gdvRepairsBreakdown.DataSource = _shipmentServices.GetDisplayList(shipments.ToList());
                 gdvRepairsBreakdown.DataBind();
             }
             catch (Exception ex)
@@ -233,7 +233,7 @@ namespace PalletManagement.Web.Reports
             Response.ClearContent();
             Response.ClearHeaders();
             Response.Charset = "";
-            string FileName = "Shipment_Breakdown_Report_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xls";
+            string FileName = "Shipment_Summary_Report_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xls";
             StringWriter strwritter = new StringWriter();
             HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -243,6 +243,69 @@ namespace PalletManagement.Web.Reports
             gdvRepairsBreakdown.HeaderStyle.Font.Bold = true;
             gdvRepairsBreakdown.RenderControl(htmltextwrtter);
             Response.Write(strwritter.ToString());
+            Response.End();
+          
+        }
+
+        protected void lnkshipmentPallets_Click(object sender, EventArgs e)
+        {
+            Response.Clear();
+            Response.Buffer = true;
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.Charset = "";
+            string FileName = "ShipmentPalletList_Report_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xls";
+            StringWriter strwritter = new StringWriter();
+            HtmlTextWriter htmltextwrtter = new HtmlTextWriter(strwritter);
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.ContentType = "application/vnd.ms-excel";
+            Response.AddHeader("Content-Disposition", "attachment;filename=" + FileName);
+            gdvPalletsList.GridLines = GridLines.Both;
+            gdvPalletsList.HeaderStyle.Font.Bold = true;
+            gdvPalletsList.RenderControl(htmltextwrtter);
+            Response.Write(strwritter.ToString());
+            Response.End();
+
+        }
+
+
+        protected void gdvRepairsBreakdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var shipmentId = int.Parse(gdvRepairsBreakdown.SelectedDataKey["ShipmentId"].ToString());
+            //hdfShipmentId.Value = shipmentId.ToString();
+            GetShipmentPallets(shipmentId);
+            muiltview1.SetActiveView(vwPallets);
+        }
+        private void GetShipmentPallets(int shipmentId)
+        {
+            try
+            {
+                var shipment = _shipmentServices.GetbyId(shipmentId);
+                if (!string.IsNullOrEmpty(shipment.PalletList))
+                {
+                    var oPalletsList = SerializationServices.DeserializeJson<List<ShipmentPallet>>(shipment.PalletList);
+
+                    var DisplayList = _shipmentServices.GetDisplayList(oPalletsList, shipment.ShipmentNumber);
+                    gdvPalletsList.DataSource = DisplayList;
+                    gdvPalletsList.DataBind();
+                }
+                else
+                {
+                    gdvPalletsList.DataSource = null;
+                    gdvPalletsList.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(ex);
+                displayMessage(ex.StackTrace + ex.Message + ex.InnerException, false);
+            }
+        }
+
+        protected void btnShowPallets_Click(object sender, EventArgs e)
+        {
+            muiltview1.SetActiveView(vwShipments);
+
         }
     }
 }

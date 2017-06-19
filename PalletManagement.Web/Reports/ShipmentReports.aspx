@@ -1,6 +1,8 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteAdmin.Master" AutoEventWireup="true" CodeBehind="ShipmentReports.aspx.cs" Inherits="PalletManagement.Web.Reports.ShipmentReports" EnableEventValidation="false" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css"
+        rel="stylesheet" type="text/css" />
     <div class="row">
         <h4>Setup Users</h4>
         <hr />
@@ -55,7 +57,7 @@
             </div>
         </div>
     </div>
-    <div class="row" >
+    <div class="row">
         <asp:Panel ID="pnlRepairs" runat="server" Height="250px" ScrollBars="vertical" BorderStyle="Solid" BorderColor="#CCCCCC" BorderWidth="1px">
             <div class="col-md-10 form-group col-lg-12 bs-component" style="padding-top: 20px">
                 <asp:LinkButton ID="lnkOverallSummaryExcel" runat="server" CssClass="btn btn-default pull-right" OnClick="lnkOverallSummaryExcel_Click">Export to Excel</asp:LinkButton>
@@ -81,25 +83,55 @@
     </div>
 
     <div class="row" style="padding-top: 20px">
-        <asp:Panel ID="pnlBreakDown" runat="server" Height="350px" ScrollBars="vertical" BorderStyle="Solid" BorderColor="#CCCCCC" BorderWidth="1px" Visible ="false">
-            <div class="col-md-10 form-group col-lg-12 bs-component" style="padding-top: 20px">
-                <asp:LinkButton ID="lnkbreakdown" runat="server" CssClass="btn btn-default pull-right" OnClick="lnkbreakdown_Click">Export to Excel</asp:LinkButton>
-                <asp:GridView ID="gdvRepairsBreakdown" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="ShipmentId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal" OnSelectedIndexChanged="gdvDamages_SelectedIndexChanged">
-                    <Columns>
-                        <asp:BoundField DataField="id" HeaderText="SN" />
-                        <%--<asp:BoundField DataField="CustomerName" HeaderText="CustomerName" />--%>
-                    <asp:BoundField DataField="ShipmentId" HeaderText="ID" Visible="false" />
-                    <asp:BoundField DataField="Source" HeaderText="Source" />
-                    <asp:BoundField DataField="SourceDateTime" HeaderText="Check Out Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
-                    <asp:BoundField DataField="Destination" HeaderText="Destination" />
-                    <asp:BoundField DataField="DestinationDateTime" HeaderText="Check In Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
-                    <asp:BoundField DataField="TruckNumber" HeaderText="Truck Number" />
-                    <asp:BoundField DataField="NoOfPalletsOut" HeaderText="Pallets Out" />
-                    </Columns>
-                    <HeaderStyle BackColor="#1A4874" ForeColor="White" />
-                </asp:GridView>
-            </div>
+        <asp:Panel ID="pnlBreakDown" runat="server" Height="350px" ScrollBars="vertical" BorderStyle="Solid" BorderColor="#CCCCCC" BorderWidth="1px" Visible="false">
+            <asp:MultiView runat="server" ID="muiltview1">
+                <asp:View ID="vwShipments" runat="server">
+                    <div class="col-md-10 form-group col-lg-12 bs-component" style="padding-top: 20px">
+                        <asp:LinkButton ID="lnkbreakdown" runat="server" CssClass="btn btn-default pull-right" OnClick="lnkbreakdown_Click">Export to Excel</asp:LinkButton>
+                        <asp:GridView ID="gdvRepairsBreakdown" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" DataKeyNames="ShipmentId" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal" OnSelectedIndexChanged="gdvRepairsBreakdown_SelectedIndexChanged">
+                            <Columns>
+                                <asp:BoundField DataField="id" HeaderText="SN" />
+                                <%--<asp:BoundField DataField="CustomerName" HeaderText="CustomerName" />--%>
+                                <asp:BoundField DataField="ShipmentId" HeaderText="ID" Visible="false" />
+                                <asp:BoundField DataField="ShipmentNumber" HeaderText="Shipment Number" />
+                                <asp:BoundField DataField="Source" HeaderText="Source" />
+                                <asp:BoundField DataField="SourceDateTime" HeaderText="Check Out Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
+                                <asp:BoundField DataField="Destination" HeaderText="Destination" />
+                                <asp:BoundField DataField="DestinationDateTime" HeaderText="Check In Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
+                                <asp:BoundField DataField="TruckNumber" HeaderText="Truck Number" />
+                                <%--<asp:BoundField DataField="NoOfPalletsOutIn" HeaderText="Pallets Out/In" />--%>
+                                <asp:TemplateField HeaderText="Pallets Out(In)">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lnkEdit" runat="server" CommandName="select" CausesValidation="False" Text='<%# Eval("NoOfPalletsOutIn") %>'></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+
+                            </Columns>
+                            <HeaderStyle BackColor="#1A4874" ForeColor="White" />
+                        </asp:GridView>
+                    </div>
+                </asp:View>
+                <asp:View ID="vwPallets" runat="server">
+                    <div class="col-md-10 form-group col-lg-12 bs-component" style="padding-top: 20px">
+                        <asp:LinkButton ID="btnBack" runat="server" CssClass="btn btn-primary pull-left " OnClick="btnShowPallets_Click">Back</asp:LinkButton>
+                        <asp:LinkButton ID="lnkPalletsList" runat="server" CssClass="btn btn-default pull-right" OnClick="lnkshipmentPallets_Click">Export to Excel</asp:LinkButton>
+                        <asp:GridView ID="gdvPalletsList" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" EmptyDataText="No Records Found." ShowHeaderWhenEmpty="True" GridLines="Horizontal">
+                            <Columns>
+                                <asp:BoundField DataField="id" HeaderText="SN" />
+                                <asp:BoundField DataField="ShipmentNumber" HeaderText="Shipment Number" />
+                                <asp:BoundField DataField="PalletCode" HeaderText="PalletCode" />
+                                <asp:BoundField DataField="CheckedIn" HeaderText="Tracked-In" />
+                                <asp:BoundField DataField="DateCheckedIn" HeaderText="Track-In Date" DataFormatString="{0:dd-MM-yy hh:mm:ss tt}" />
+                            </Columns>
+                            <HeaderStyle BackColor="#1A4874" ForeColor="White" />
+                        </asp:GridView>
+                    </div>
+                </asp:View>
+            </asp:MultiView>
+
         </asp:Panel>
+        <asp:HiddenField ID="hdfShipmentId" runat="server" />
+
     </div>
 
 </asp:Content>

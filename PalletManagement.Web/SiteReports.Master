@@ -59,7 +59,7 @@
                                 <li><a href="/Reports/Summary">Summary</a></li>
                                 <li><a href="/Reports/RepairsReports">Damages</a></li>
                                 <li><a href="/Reports/ShipmentReports">Shipments</a></li>
-                                <li><a href="#">Pallet Movement</a></li>
+                                <li><a href="/Reports/PalletsReport">Pallet Details</a></li>
                                 <%--  <li><a href="#">Totally Damaged Pallets</a></li>
                                 <li><a href="#">Repaired Pallets</a></li>
                                 <li><a href="#">Outstanding Repairable Pallets</a></li>

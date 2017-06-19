@@ -53,8 +53,8 @@ namespace PalletManagement.Web
                     else
                     {
                         Session.Add("CurrentUser", currentUser );
-                        var facility = currentUser.UserRoleId == (int)USER_ROLES.Admin ? "Administrator" : currentUser.AssignedFacility?.FacilityName;
-                        Session.Add("UserDetails", $"{currentUser.FirstName} | {facility}");
+                        var facilityRole = currentUser.UserRoleId == (int)USER_ROLES.Admin ? "Administrator" : $"{currentUser.AssignedFacility?.FacilityName} | {currentUser?.UserRole?.UserRoleName}";
+                        Session.Add("UserDetails", $"{currentUser.FirstName} | {facilityRole}");
                         //var d = Request.UserAgent;
                         //var r = Request.UserHostAddress + Request.UserHostName;
                         currentUser.LastLoginDate = DateTime.Now;
@@ -77,24 +77,7 @@ namespace PalletManagement.Web
         }
         private User AuthenticateUser(string emailaddress, string password)
         {
-            //if (emailaddress == "admin@pil.com" && password == "admin")
-            //{
-            //    return new User
-            //    {
-            //        FirstName = "Administrator",
-            //        LastName = "Administrator",
-            //        DateAdded = DateTime.Now,
-            //        UserRole = new UserRole { UserRoleName = "Admin" },
-            //        EmailAddress = emailaddress,
-            //        StaffNumber = "1234",
-            //        ProfileStatus = "A",
-            //        PhoneNumber = "08029039468"
-            //    };
-            //}
-
             return _userServices.Authenticate(emailaddress, password);
-
-
         }
     }
 }

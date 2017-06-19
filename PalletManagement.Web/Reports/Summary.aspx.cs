@@ -102,16 +102,16 @@ namespace PalletManagement.Web.Reports
 
         private void displayMessage(string message, bool isSuccessMsg)
         {
-            //ErrorMessage.Visible = true;
-            //if (isSuccessMsg)
-            //    FailureText.Text = $"{message}";
-            //else
-            //    FailureText.Text = $"ERROR:{message}";
+            ErrorMessage.Visible = true;
+            if (isSuccessMsg)
+                FailureText.Text = $"{message}";
+            else
+                FailureText.Text = $"ERROR:{message}";
         }
 
         private void ResetForm()
         {
-            //ErrorMessage.Visible = false;
+            ErrorMessage.Visible = false;
             //hdfShipmentId.Value = string.Empty;
         }
 

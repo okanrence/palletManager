@@ -1,6 +1,7 @@
 ﻿using Byaxiom.Logger;
 using MyAppTools.Services;
 using PalletManagement.Core.Domain;
+using PalletManagement.Core.Models;
 using PalletManagement.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -60,11 +61,10 @@ namespace PalletManagement.Web.Setup
                     var shipmentIsComplete = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected == false).Select(x => x.Text).ToList().Count <= 0;
 
                     var oShipment = _shipmentService.GetbyId(shipmentId);
-                   
+
                     oShipment.IsCompleted = shipmentIsComplete;
                     oShipment.DestinationDateTime = DateTime.Now;
                     oShipment.InTrackerId = CurrentUser.UserId;
-
 
                     var oPallets = _palletService.GetList().Where(x => allPallets.Contains(x.PalletCode)).ToList();
                     var updatedPallets = oPallets.Select(c =>
@@ -74,17 +74,31 @@ namespace PalletManagement.Web.Setup
                             c.FacilityId = oShipment.ShipmentDestinationId;
                             c.CurrentShipmentId = null;
                             c.StatusId = (int)PALLET_STATUS.Available;
+
                         }
                         else
                         {
                             c.StatusId = (int)PALLET_STATUS.Unaccounted;
                             c.FacilityId = oShipment.ShipmentSourceId;
-
                         }
 
 
                         return c;
                     }).ToList();
+
+                    var shipmentPallets = SerializationServices.DeserializeJson<List<ShipmentPallet>>(oShipment.PalletList);
+
+                    var updatedShipmentPallets = shipmentPallets.Select(c =>
+                    {
+                        if (selectedPallets.Contains(c.PalletCode))
+                        {
+                            c.CheckedIn = true;
+                            c.DateCheckedIn = DateTime.Now;
+                        }
+                        return c;
+                    }).ToList();
+
+                    oShipment.PalletList = SerializationServices.SerializeJson(shipmentPallets);
 
                     _palletService.Update(updatedPallets);
                     oShipment.NoOfPalletsIn += selectedPallets.Count();

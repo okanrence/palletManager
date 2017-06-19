@@ -10,7 +10,7 @@
 namespace PalletManagement.Web.Reports {
     
     
-    public partial class ShipmentReports {
+    public partial class PalletsReport {
         
         /// <summary>
         /// ErrorMessage control.
@@ -31,13 +31,13 @@ namespace PalletManagement.Web.Reports {
         protected global::System.Web.UI.WebControls.Literal FailureText;
         
         /// <summary>
-        /// txtStartDate control.
+        /// ddlStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStartDate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
         
         /// <summary>
         /// ddlCustomer control.
@@ -49,13 +49,13 @@ namespace PalletManagement.Web.Reports {
         protected global::System.Web.UI.WebControls.DropDownList ddlCustomer;
         
         /// <summary>
-        /// txtEndDate control.
+        /// txtPalletCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEndDate;
+        protected global::System.Web.UI.WebControls.TextBox txtPalletCode;
         
         /// <summary>
         /// ddlFacilities control.
@@ -103,102 +103,12 @@ namespace PalletManagement.Web.Reports {
         protected global::System.Web.UI.WebControls.LinkButton lnkOverallSummaryExcel;
         
         /// <summary>
-        /// gdvDamages control.
+        /// gdvPallets control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gdvDamages;
-        
-        /// <summary>
-        /// pnlBreakDown control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlBreakDown;
-        
-        /// <summary>
-        /// muiltview1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.MultiView muiltview1;
-        
-        /// <summary>
-        /// vwShipments control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.View vwShipments;
-        
-        /// <summary>
-        /// lnkbreakdown control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkbreakdown;
-        
-        /// <summary>
-        /// gdvRepairsBreakdown control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gdvRepairsBreakdown;
-        
-        /// <summary>
-        /// vwPallets control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.View vwPallets;
-        
-        /// <summary>
-        /// btnBack control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnBack;
-        
-        /// <summary>
-        /// lnkPalletsList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkPalletsList;
-        
-        /// <summary>
-        /// gdvPalletsList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gdvPalletsList;
-        
-        /// <summary>
-        /// hdfShipmentId control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdfShipmentId;
+        protected global::System.Web.UI.WebControls.GridView gdvPallets;
     }
 }

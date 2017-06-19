@@ -2,6 +2,7 @@
 using MyAppTools.Services;
 using PalletManagement.Core.Domain;
 using PalletManagement.Core.Services;
+using PalletManagement.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,9 @@ namespace PalletManagement.Web.Setup
                 {
                     List<string> selectedPallets = chkAvailablePatllets.Items.Cast<ListItem>().Where(x => x.Selected).Select(x => x.Text).ToList();
 
+                   
+
+
                     var oShipment = new Shipment
                     {
                         DateAdded = DateTime.Now,
@@ -84,12 +88,29 @@ namespace PalletManagement.Web.Setup
                         TruckNumber = txtTruckNumber.Text,
                         ShipmentStatusId = (int)SHIPMENT_STATUS.Checked_Out,
                         SourceDateTime = DateTime.Now,
-                        PalletList = SerializationServices.SerializeJson(selectedPallets),
                         NoOfPalletsOut = selectedPallets.Count,
                         IsCompleted = false,
                         NoOfPalletsIn = 0,
                         CustomerId = CurrentUser.AssignedFacility.CustomerId
                     };
+
+                    var oShipmentPallets = new List<ShipmentPallet>();
+
+                    ShipmentPallet oShipmentPallet = null;
+
+                    foreach (var p in selectedPallets)
+                    {
+                        oShipmentPallet = new ShipmentPallet();
+                        oShipmentPallet.PalletCode = p;
+                        oShipmentPallet.CheckedIn = false;
+                        oShipmentPallet.DateCheckedIn = null;
+                        oShipmentPallets.Add(oShipmentPallet);
+                        oShipmentPallet = null;
+                    }
+
+                    oShipment.PalletList = SerializationServices.SerializeJson(oShipmentPallets);
+
+
                     _shipmentService.Add(oShipment);
 
                     var palletsToAdd = _palletService.GetList().Where(x => selectedPallets.Contains(x.PalletCode)).ToList();
@@ -153,7 +174,7 @@ namespace PalletManagement.Web.Setup
                     oShipment.ShipmentNumber = txtShipmentNumber.Text;
                     oShipment.TruckNumber = txtTruckNumber.Text;
                     oShipment.SourceDateTime = DateTime.Now;
-                    oShipment.PalletList = SerializationServices.SerializeJson(checkedPallets);
+                    //oShipment.PalletOutList = SerializationServices.SerializeJson(checkedPallets);
                     oShipment.NoOfPalletsOut = checkedPallets.Count;
 
                     var facilityPallets = _palletService.GetList().Where(x => x.FacilityId == CurrentUser.AssignedFacilityId).ToList();
@@ -172,6 +193,22 @@ namespace PalletManagement.Web.Setup
                         }
                         return c;
                     }).ToList();
+
+                    var oShipmentPallets = new List<ShipmentPallet>();
+
+                    ShipmentPallet oShipmentPallet = null;
+
+                    foreach (var p in checkedPallets)
+                    {
+                        oShipmentPallet = new ShipmentPallet();
+                        oShipmentPallet.PalletCode = p;
+                        oShipmentPallet.CheckedIn = false;
+                        oShipmentPallet.DateCheckedIn = null;
+                        oShipmentPallets.Add(oShipmentPallet);
+                        oShipmentPallet = null;
+                    }
+
+                    oShipment.PalletList = SerializationServices.SerializeJson(oShipmentPallets);
 
 
                     _shipmentService.Update(oShipment);

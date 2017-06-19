@@ -4,6 +4,7 @@ using PalletManagement.Core.Infrastructure;
 using PalletManagement.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Entity;
 using System.Data.OleDb;
@@ -27,7 +28,8 @@ namespace PalletManagement.Core.Services
         int Attach(Pallet oPallet);
         IQueryable<Pallet> GetbyShipmentId(int shipmentId);
         List<PalletSummary> GetPalletSummary(int? customerId = null);
-
+        List<Pallet> GetPalletList(string PalletCode = null, int? StatusId = null, int? customerID = null, int? facilityId = null);
+        object GetPalletListDisplay(List<Pallet> oPallets);
     }
 
     public class PalletServices : BaseService, IPalletServices
@@ -95,8 +97,42 @@ namespace PalletManagement.Core.Services
         public IQueryable<Pallet> GetList()
         {
             return _palletRepo.All.AsNoTracking()
-                .Include(x => x.CurrentLocation);
+                .Include(x => x.CurrentLocation)
+                .Include(x=>x.PalletStatus);
         }
+
+        public List<Pallet> GetPalletList(string PalletCode = null, int? StatusId = null, int? customerID = null, int? facilityId = null)
+        {
+            var query = this.GetList();
+            if (PalletCode != null)
+                query = query.Where(x => x.PalletCode == PalletCode);
+
+            if (StatusId != null)
+            {
+
+                if (StatusId == (int)PALLET_STATUS.Dormant)
+                {
+                    int dormantDays = int.Parse(ConfigurationManager.AppSettings["dormantDays"]);
+                    //var d = DateTime.Now.AddDays(-dormantDays);
+                    query = query.Where(x => x.LastMovementDate != null && DbFunctions.DiffDays(x.LastMovementDate, x.DateAdded) > dormantDays);
+                   
+                }
+                else
+                {
+                    query = query.Where(x => x.StatusId == StatusId);
+                }
+            }
+
+            if (customerID != null)
+                query = query.Where(x => x.CurrentLocation.CustomerId == customerID);
+
+            if (facilityId != null)
+                query = query.Where(x => x.FacilityId == facilityId);
+
+            
+            return query.ToList();
+        }
+
         public List<PalletSummary> GetPalletSummary(int? customerId = null)
         {
             List<PalletSummary> result = null;
@@ -132,11 +168,7 @@ namespace PalletManagement.Core.Services
             return result;
         }
 
-        //public int SaveChanges()
-        //{
-        //    return unitOfWork.SaveChanges();
-        //}
-
+        
         public object GetDisplayList(List<Pallet> oPallets)
         {
             return oPallets.Select(i => new
@@ -145,6 +177,21 @@ namespace PalletManagement.Core.Services
                 i.PalletCode,
                 StatusName = i.PalletStatus?.StatusName ?? "N/A",
                 FacilityName = i.CurrentLocation?.FacilityName ?? "N/A"
+            });
+        }
+
+        public object GetPalletListDisplay(List<Pallet> oPallets)
+        {
+            int serialNumber = 1;
+
+            return oPallets.Select(i => new
+            {
+                id = serialNumber++,
+                i.PalletId,
+                i.PalletCode,
+                Status = i.PalletStatus?.StatusName ?? "N/A",
+                CurentLocation = i.CurrentLocation?.FacilityName ?? "N/A",
+                i.LastMovementDate
             });
         }
 

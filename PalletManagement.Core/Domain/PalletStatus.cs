@@ -13,7 +13,7 @@ namespace PalletManagement.Core.Domain
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
         public string StatusName { get; set; }
     }
 }
